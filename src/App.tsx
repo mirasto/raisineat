@@ -8,15 +8,13 @@
  * @format
  */
 
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import RootNavigation from './navigators';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { RootNavigator } from './navigation';
 
-const App = () => {
+export const App = () => {
   return (
     <SafeAreaProvider>
-      <RootNavigation />
+      <RootNavigator />
     </SafeAreaProvider>
   );
 };
-
-export default App;
