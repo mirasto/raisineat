@@ -8,11 +8,10 @@
  * @format
  */
 
-import React, {FC} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import RootNavigation from './navigators';
 
-const App: FC = () => {
+const App = () => {
   return (
     <SafeAreaProvider>
       <RootNavigation />

@@ -1,4 +1,3 @@
-import React, {FC} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RestaurantList from '../../features/dashboard/screens/RestaurantList';
 import RestaurantDetail from '../../features/dashboard/screens/RestaurantDetail';
@@ -6,7 +5,7 @@ import CuisineList from '../../features/dashboard/screens/CuisineList';
 
 const Stack = createNativeStackNavigator();
 
-const DashboardNavigation: FC = () => {
+const DashboardNavigation = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Cuisines" component={CuisineList} />
