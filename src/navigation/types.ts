@@ -6,15 +6,17 @@ export type AuthStackParamList = {
   Login: undefined;
 };
 
-export type DashboardStackParamList = {
+export type RestaurantsStackParamList = {
   Cuisines: undefined;
   Restaurants: { cuisine: string };
   Detail: { restaurantId: string; title?: string };
 };
 
+export type DashboardStackParamList = RestaurantsStackParamList;
+
 export type RootStackParamList = {
   Auth: undefined;
-  Dashboard: undefined;
+  App: undefined;
 };
 
 export type SplashScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Splash'>;
@@ -22,20 +24,20 @@ export type SplashScreenNavigationProp = NativeStackNavigationProp<AuthStackPara
 export type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
 export type CuisineListNavigationProp = NativeStackNavigationProp<
-  DashboardStackParamList,
+  RestaurantsStackParamList,
   'Cuisines'
 >;
 
 export type RestaurantListNavigationProp = NativeStackNavigationProp<
-  DashboardStackParamList,
+  RestaurantsStackParamList,
   'Restaurants'
 >;
 
-export type RestaurantListRouteProp = RouteProp<DashboardStackParamList, 'Restaurants'>;
+export type RestaurantListRouteProp = RouteProp<RestaurantsStackParamList, 'Restaurants'>;
 
 export type RestaurantDetailNavigationProp = NativeStackNavigationProp<
-  DashboardStackParamList,
+  RestaurantsStackParamList,
   'Detail'
 >;
 
-export type RestaurantDetailRouteProp = RouteProp<DashboardStackParamList, 'Detail'>;
+export type RestaurantDetailRouteProp = RouteProp<RestaurantsStackParamList, 'Detail'>;

@@ -1,7 +1,16 @@
 import { useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, StatusBar, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Animated,
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { splashLogo } from '@/assets/icons';
 import type { SplashScreenNavigationProp } from '@/navigation';
 
 export const SplashScreen = () => {
@@ -50,7 +59,7 @@ export const SplashScreen = () => {
         ]}
       >
         <View style={styles.logoBadge}>
-          <Text style={styles.logoIcon}>🍇</Text>
+          <Image source={splashLogo} style={styles.logoImage} resizeMode="contain" />
         </View>
 
         <Text style={styles.appName}>RaisinEat</Text>
@@ -91,8 +100,9 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     elevation: 8,
   },
-  logoIcon: {
-    fontSize: 44,
+  logoImage: {
+    width: 62,
+    height: 62,
   },
   appName: {
     fontSize: 38,

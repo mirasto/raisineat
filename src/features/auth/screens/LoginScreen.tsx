@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -11,14 +12,23 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { InputRow } from '../components/InputRow';
+import { checkIcon, errorIcon } from '@/assets/icons';
+import { Input } from '@/components/ui';
+import { useAppDispatch } from '@/store';
+import { loginSuccess } from '../model/authSlice';
 import { useLogin } from '../hooks/useLogin';
+import { isValidEmail, isValidPassword } from '../utils/validation';
 
 export const LoginScreen = () => {
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { isLoading, error, fieldErrors, submit, clearErrors } = useLogin();
+  const { isLoading, error, fieldErrors, submit, clearErrors } = useLogin({
+    onSuccess: (data) => {
+      dispatch(loginSuccess(data));
+    },
+  });
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
@@ -34,8 +44,60 @@ export const LoginScreen = () => {
     }
   };
 
+  const handleClearEmail = () => {
+    setEmail('');
+    clearErrors();
+  };
+
+  const handleClearPassword = () => {
+    setPassword('');
+    clearErrors();
+  };
+
   const handleSignIn = async () => {
     await submit({ email, password });
+  };
+
+  const isEmailValid = isValidEmail(email);
+  const isPasswordValid = isValidPassword(password);
+  const isFormReady = isEmailValid && isPasswordValid;
+
+  const renderEmailAccessory = () => {
+    if (!email) {
+      return null;
+    }
+    if (fieldErrors.email) {
+      return (
+        <Pressable onPress={handleClearEmail} hitSlop={8}>
+          <Image source={errorIcon} style={styles.statusIcon} />
+        </Pressable>
+      );
+    }
+    if (isEmailValid) {
+      return <Image source={checkIcon} style={styles.statusIcon} />;
+    }
+    return (
+      <Pressable onPress={handleClearEmail} hitSlop={8}>
+        <Image source={errorIcon} style={styles.statusIcon} />
+      </Pressable>
+    );
+  };
+
+  const renderPasswordAccessory = () => {
+    if (!password) {
+      return null;
+    }
+    if (fieldErrors.password) {
+      return (
+        <Pressable onPress={handleClearPassword} hitSlop={8}>
+          <Image source={errorIcon} style={styles.statusIcon} />
+        </Pressable>
+      );
+    }
+    if (isPasswordValid) {
+      return <Image source={checkIcon} style={styles.statusIcon} />;
+    }
+    return null;
   };
 
   return (
@@ -67,7 +129,7 @@ export const LoginScreen = () => {
               </View>
             ) : null}
 
-            <InputRow
+            <Input
               label="Username or email"
               placeholder="Enter username or email"
               value={email}
@@ -75,15 +137,17 @@ export const LoginScreen = () => {
               keyboardType="email-address"
               autoCapitalize="none"
               error={fieldErrors.email}
+              rightElement={renderEmailAccessory()}
             />
 
-            <InputRow
+            <Input
               label="Password"
               placeholder="Enter password"
               value={password}
               onChangeText={handlePasswordChange}
               secureTextEntry
               error={fieldErrors.password}
+              rightElement={renderPasswordAccessory()}
             />
 
             <Pressable
@@ -91,8 +155,8 @@ export const LoginScreen = () => {
               disabled={isLoading}
               style={({ pressed }) => [
                 styles.signInButton,
+                isFormReady ? styles.signInButtonActive : styles.signInButtonDisabled,
                 pressed && styles.signInButtonPressed,
-                isLoading && styles.signInButtonDisabled,
               ]}
             >
               {isLoading ? (
@@ -160,20 +224,26 @@ const styles = StyleSheet.create({
   signInButton: {
     height: 56,
     borderRadius: 14,
-    backgroundColor: '#818CF8',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 32,
   },
-  signInButtonPressed: {
-    opacity: 0.8,
+  signInButtonActive: {
+    backgroundColor: '#818CF8',
   },
   signInButtonDisabled: {
     backgroundColor: '#CBD5E1',
+  },
+  signInButtonPressed: {
+    opacity: 0.85,
   },
   signInButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#FFFFFF',
+  },
+  statusIcon: {
+    width: 22,
+    height: 22,
   },
 });

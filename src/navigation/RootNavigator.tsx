@@ -1,13 +1,15 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { useAppSelector } from '@/store';
+import { selectIsAuthorized } from '@/features/auth/model/authSlice';
 import { AuthNavigator } from './AuthNavigator';
-import { DashboardNavigator } from './DashboardNavigator';
+import { RestaurantsNavigator } from './RestaurantsNavigator';
 
 export const RootNavigator = () => {
-  const isAuthorized = true;
+  const isAuthorized = useAppSelector(selectIsAuthorized);
 
   return (
     <NavigationContainer>
-      {isAuthorized ? <DashboardNavigator /> : <AuthNavigator />}
+      {isAuthorized ? <RestaurantsNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };
