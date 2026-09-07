@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { useAppSelector } from '@/store';
-import { selectIsAuthorized } from '@/store/authSlice';
+import { selectIsAuthorized } from '@/features/auth';
 import { AuthNavigator } from './AuthNavigator';
 import { RestaurantsNavigator } from './RestaurantsNavigator';
 

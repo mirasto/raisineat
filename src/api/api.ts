@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { API_CONFIG } from '@/constants/api';
-import { adaptCuisinesApiResponse } from './adapters';
+import { API_CONFIG } from '@/shared/constants';
+import { adaptCuisinesApiResponse } from '@/features/restaurants/adapters';
 import { cuisinesApiResponseSchema, loginResponseSchema } from './schemas';
-import type { CuisinesData, LoginCredentials, LoginResponse } from '@/types';
+import type { CuisinesData } from '@/features/restaurants/types';
+import type { LoginCredentials, LoginResponse } from '@/features/auth/types';
 
 export const api = createApi({
   reducerPath: 'api',

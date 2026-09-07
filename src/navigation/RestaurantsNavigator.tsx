@@ -1,15 +1,15 @@
 import { Pressable, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { ChevronLeft } from '@/components/ui';
-import { theme } from '@/constants/theme';
+import { ChevronLeft } from '@/shared/ui';
+import { theme } from '@/shared/constants';
 import {
   CuisineListScreen,
   RestaurantDetailScreen,
   RestaurantListScreen,
-} from '@/screens';
+} from '@/features/restaurants';
 import { useAppDispatch } from '@/store';
-import { logout } from '@/store/authSlice';
+import { logout } from '@/features/auth';
 import type { RestaurantsStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RestaurantsStackParamList>();

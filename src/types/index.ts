@@ -1,2 +1,2 @@
-export * from './auth';
-export * from './restaurants';
+export * from '@/features/auth/types';
+export * from '@/features/restaurants/types';
