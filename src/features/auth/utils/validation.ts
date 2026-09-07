@@ -1,34 +1,46 @@
-import type { LoginCredentials, ValidationResult } from '../types';
+import { z } from 'zod';
+import type { AuthFormErrors, LoginCredentials, ValidationResult } from '../types';
 
-const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-const MIN_PASSWORD_LENGTH = 6;
+export const loginSchema = z.object({
+  email: z.string().trim().min(1, 'Email is required').email('Invalid email address'),
+  password: z
+    .string()
+    .min(1, 'Password is required')
+    .min(6, 'Password must be at least 6 characters'),
+});
 
 export const isValidEmail = (email: string): boolean => {
-  return EMAIL_REGEX.test(email.trim());
+  const trimmed = email.trim();
+  if (!trimmed) {
+    return false;
+  }
+  return z.string().email().safeParse(trimmed).success;
 };
 
 export const isValidPassword = (password: string): boolean => {
-  return password.length >= MIN_PASSWORD_LENGTH;
+  return z.string().min(6).safeParse(password).success;
 };
 
 export const validateLoginForm = (credentials: LoginCredentials): ValidationResult => {
-  const errors: ValidationResult['errors'] = {};
+  const result = loginSchema.safeParse(credentials);
 
-  const trimmedEmail = credentials.email.trim();
-  if (!trimmedEmail) {
-    errors.email = 'Email is required';
-  } else if (!isValidEmail(trimmedEmail)) {
-    errors.email = 'Invalid email address';
+  if (result.success) {
+    return {
+      isValid: true,
+      errors: {},
+    };
   }
 
-  if (!credentials.password) {
-    errors.password = 'Password is required';
-  } else if (!isValidPassword(credentials.password)) {
-    errors.password = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`;
+  const errors: AuthFormErrors = {};
+  for (const issue of result.error.issues) {
+    const field = issue.path[0] as keyof AuthFormErrors;
+    if (field && !errors[field]) {
+      errors[field] = issue.message;
+    }
   }
 
   return {
-    isValid: Object.keys(errors).length === 0,
+    isValid: false,
     errors,
   };
 };

@@ -1,5 +1,11 @@
+import { z } from 'zod';
 import { API_CONFIG } from '@/constants/api';
-import type { LoginCredentials, LoginErrorResponse, LoginResponse } from '../types';
+import type { LoginCredentials, LoginResponse } from '../types';
+
+const loginResponseSchema = z.object({
+  message: z.string(),
+  userId: z.number(),
+});
 
 export const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.LOGIN}`, {
@@ -10,12 +16,19 @@ export const login = async (credentials: LoginCredentials): Promise<LoginRespons
     body: JSON.stringify(credentials),
   });
 
-  const data = (await response.json()) as LoginResponse | LoginErrorResponse;
+  const rawData: unknown = await response.json();
 
-  if (!response.ok || 'error' in data) {
-    const errorMessage = 'error' in data ? data.error : 'Authentication failed';
-    throw new Error(errorMessage);
+  if (!response.ok) {
+    if (typeof rawData === 'object' && rawData !== null && 'error' in rawData) {
+      throw new Error(String((rawData as { error: unknown }).error));
+    }
+    throw new Error('Authentication failed');
   }
 
-  return data;
+  const parseResult = loginResponseSchema.safeParse(rawData);
+  if (!parseResult.success) {
+    throw new Error('Invalid authentication response format from server');
+  }
+
+  return parseResult.data;
 };
