@@ -42,7 +42,7 @@ export const SplashScreen = () => {
       </Animated.View>
 
       <View style={styles.footerContainer}>
-        <ActivityIndicator size="small" color="#FFFFFF" />
+        <ActivityIndicator size="small" color={theme.colors.white} />
         <Text style={styles.versionText}>v1.0.0</Text>
       </View>
     </LinearGradient>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 38,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: theme.colors.white,
     letterSpacing: -0.5,
   },
   tagline: {

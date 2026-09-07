@@ -17,11 +17,11 @@ export const RestaurantCard = memo(({ item, onPress }: RestaurantCardProps) => {
     >
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.imageUrl }} style={styles.image} resizeMode="cover" />
-        {item.isClosed ? (
+        {item.isClosed && (
           <View style={styles.closedOverlay}>
             <Text style={styles.closedText}>Closed</Text>
           </View>
-        ) : null}
+        )}
       </View>
 
       <View style={styles.content}>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   closedText: {
-    color: '#FFFFFF',
+    color: theme.colors.white,
     fontSize: 16,
     fontWeight: '600',
     letterSpacing: 0.5,

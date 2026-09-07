@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Pressable,
-  PressableProps,
   StyleProp,
   StyleSheet,
   Text,
@@ -10,40 +9,40 @@ import {
 } from 'react-native';
 import { theme } from '@/shared/constants';
 
-export interface ButtonProps extends Omit<PressableProps, 'style'> {
+export interface ButtonProps {
   title: string;
+  onPress?: () => void;
   loading?: boolean;
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
 }
 
 export const Button = ({
   title,
+  onPress,
   loading = false,
   disabled = false,
   style,
   textStyle,
-  ...rest
 }: ButtonProps) => {
-  const isDisabled = disabled || loading;
+  const isBlocked = disabled || loading;
 
   return (
     <Pressable
-      disabled={isDisabled}
+      onPress={onPress}
+      disabled={isBlocked}
       style={({ pressed }) => [
         styles.button,
         pressed && styles.buttonPressed,
-        isDisabled && styles.buttonDisabled,
+        isBlocked && styles.buttonDisabled,
         style,
       ]}
-      {...rest}
     >
       {loading ? (
         <ActivityIndicator color={theme.colors.card} />
       ) : (
-        <Text style={textStyle ? [styles.buttonText, textStyle] : styles.buttonText}>
-          {title}
-        </Text>
+        <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       )}
     </Pressable>
   );

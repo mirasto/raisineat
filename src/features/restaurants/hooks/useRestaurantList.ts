@@ -27,9 +27,9 @@ export const useRestaurantList = () => {
   return {
     cuisine,
     restaurants,
-    isLoading: isLoading && restaurants.length === 0,
-    isRefreshing: isFetching && !isLoading,
-    isError: isError && restaurants.length === 0,
+    isLoading,
+    isFetching,
+    isError,
     refetch,
     handleSelectRestaurant,
   };

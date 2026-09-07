@@ -1,2 +1,2 @@
-export * from './api';
-export * from './theme';
+export { API_CONFIG } from './api';
+export { theme } from './theme';

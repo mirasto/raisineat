@@ -24,9 +24,9 @@ export const useCuisineList = () => {
 
   return {
     cuisines,
-    isLoading: isLoading && cuisines.length === 0,
-    isRefreshing: isFetching && !isLoading,
-    isError: isError && cuisines.length === 0,
+    isLoading,
+    isFetching,
+    isError,
     refetch,
     handleSelectCuisine,
   };

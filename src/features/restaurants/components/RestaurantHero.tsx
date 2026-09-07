@@ -21,24 +21,16 @@ export const RestaurantHero = ({
     <View style={styles.heroContainer}>
       <Image source={{ uri: imageUrl }} style={styles.heroImage} resizeMode="cover" />
 
-      <Pressable
-        style={[styles.backButton, { top: topInset + 8 }]}
-        onPress={onBack}
-        hitSlop={12}
-      >
-        <ChevronLeft color="#FFFFFF" size={24} />
+      <Pressable style={[styles.backButton, { top: topInset }]} onPress={onBack} hitSlop={12}>
+        <ChevronLeft color={theme.colors.white} />
       </Pressable>
 
       <View style={styles.heroBadgesOverlay}>
         <View style={styles.overlayBadge}>
-          <Text style={styles.overlayBadgeText}>
-            DELIVERY: {deliveryCost.toFixed(2)}
-          </Text>
+          <Text style={styles.overlayBadgeText}>DELIVERY: {deliveryCost.toFixed(2)}</Text>
         </View>
         <View style={styles.overlayBadge}>
-          <Text style={styles.overlayBadgeText}>
-            MIN. ORDER: {minOrder.toFixed(2)}
-          </Text>
+          <Text style={styles.overlayBadgeText}>MIN. ORDER: {minOrder.toFixed(2)}</Text>
         </View>
       </View>
     </View>
@@ -59,6 +51,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 16,
+    marginTop: 8,
     width: 36,
     height: 36,
     borderRadius: 18,

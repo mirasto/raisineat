@@ -6,10 +6,9 @@ export { useSplashAnimation } from './hooks/useSplashAnimation';
 export {
   authSlice,
   authReducer,
-  loginSuccess,
   logout,
   selectIsAuthorized,
   selectCurrentUserId,
 } from './authSlice';
 export type { AuthState } from './authSlice';
-export * from './types';
+export type { LoginCredentials, LoginResponse, AuthFormErrors, ValidationResult } from './types';

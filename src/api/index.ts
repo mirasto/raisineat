@@ -1,2 +1,9 @@
 export { api, useLoginMutation, useGetCuisinesQuery } from './api';
-export * from './schemas';
+export {
+  restaurantItemSchema,
+  cuisineGroupSchema,
+  cuisinesApiResponseSchema,
+  loginSchema,
+  loginResponseSchema,
+} from './schemas';
+

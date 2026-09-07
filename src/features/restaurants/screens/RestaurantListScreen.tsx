@@ -10,7 +10,7 @@ export const RestaurantListScreen = () => {
   const {
     restaurants,
     isLoading,
-    isRefreshing,
+    isFetching,
     isError,
     refetch,
     handleSelectRestaurant,
@@ -42,7 +42,7 @@ export const RestaurantListScreen = () => {
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        refreshing={isRefreshing}
+        refreshing={isFetching}
         onRefresh={refetch}
         ListEmptyComponent={<EmptyState message="No restaurants found" />}
       />

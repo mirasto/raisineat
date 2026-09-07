@@ -1,10 +1,5 @@
-import {
-  authReducer,
-  loginSuccess,
-  logout,
-  selectCurrentUserId,
-  selectIsAuthorized,
-} from './authSlice';
+import { authReducer, logout, selectCurrentUserId, selectIsAuthorized } from './authSlice';
+import { api } from '@/api';
 
 describe('authSlice', () => {
   const initialState = {
@@ -16,9 +11,18 @@ describe('authSlice', () => {
     expect(authReducer(undefined, { type: 'unknown' })).toEqual(initialState);
   });
 
-  it('should handle loginSuccess', () => {
-    const payload = { userId: 42, message: 'Success' };
-    const state = authReducer(initialState, loginSuccess(payload));
+  it('should handle login matchFulfilled', () => {
+    const action = {
+      type: 'api/executeMutation/fulfilled',
+      payload: { userId: 42, message: 'Success' },
+      meta: {
+        arg: {
+          endpointName: 'login',
+        },
+      },
+    };
+    expect(api.endpoints.login.matchFulfilled(action)).toBe(true);
+    const state = authReducer(initialState, action);
 
     expect(state).toEqual({
       isAuthorized: true,

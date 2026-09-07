@@ -1,15 +1,10 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { theme } from '@/shared/constants';
 
-interface LoaderProps {
-  message?: string;
-}
-
-export const Loader = ({ message }: LoaderProps = {}) => {
+export const Loader = () => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color={theme.colors.primary} />
-      {message ? <Text style={styles.message}>{message}</Text> : null}
     </View>
   );
 };
@@ -21,10 +16,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.colors.background,
     padding: theme.spacing.lg,
-  },
-  message: {
-    marginTop: theme.spacing.md,
-    fontSize: 14,
-    color: theme.colors.textSecondary,
   },
 });

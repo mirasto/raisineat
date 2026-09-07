@@ -16,9 +16,9 @@ export const ErrorState = ({
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{message}</Text>
-      {onRetry ? (
+      {Boolean(onRetry) && (
         <Button title={retryTitle} onPress={onRetry} style={styles.button} />
-      ) : null}
+      )}
     </View>
   );
 };

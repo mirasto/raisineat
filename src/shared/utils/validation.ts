@@ -1,23 +1,5 @@
-import { z } from 'zod';
-import { loginSchema} from '@/api/schemas';
-import type { AuthFormErrors, LoginCredentials, ValidationResult } from '@/types';
-const emailFormatSchema = z.string().trim().email();
-const passwordLengthSchema = z.string().min(6);
-
-export const checkIsValidEmail = (email: string): boolean => {
-  const trimmed = email.trim();
-  if (!trimmed) {
-    return false;
-  }
-  return emailFormatSchema.safeParse(trimmed).success;
-};
-
-export const checkIsValidPassword = (password: string): boolean => {
-  return passwordLengthSchema.safeParse(password).success;
-};
-
-export const isValidEmail = checkIsValidEmail;
-export const isValidPassword = checkIsValidPassword;
+import { loginSchema } from '@/api/schemas';
+import type { AuthFormErrors, LoginCredentials, ValidationResult } from '@/features/auth/types';
 
 export const validateLoginForm = (credentials: LoginCredentials): ValidationResult => {
   const result = loginSchema.safeParse(credentials);
@@ -29,12 +11,14 @@ export const validateLoginForm = (credentials: LoginCredentials): ValidationResu
     };
   }
 
+  const { fieldErrors } = result.error.flatten();
+
   const errors: AuthFormErrors = {};
-  for (const issue of result.error.issues) {
-    const field = issue.path[0];
-    if ((field === 'email' || field === 'password') && !errors[field]) {
-      errors[field] = issue.message;
-    }
+  if (fieldErrors.email?.[0]) {
+    errors.email = fieldErrors.email[0];
+  }
+  if (fieldErrors.password?.[0]) {
+    errors.password = fieldErrors.password[0];
   }
 
   return {

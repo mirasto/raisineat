@@ -1,1 +1,1 @@
-export * from './validation';
+export { validateLoginForm } from './validation';

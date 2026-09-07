@@ -1,34 +1,6 @@
-import { isValidEmail, isValidPassword, validateLoginForm } from './validation';
+import { validateLoginForm } from './validation';
 
 describe('Auth Validation Utilities', () => {
-  describe('isValidEmail', () => {
-    it('returns true for valid email formats', () => {
-      expect(isValidEmail('user@example.com')).toBe(true);
-      expect(isValidEmail('test.dev@company.co.uk')).toBe(true);
-      expect(isValidEmail('  alex+test@domain.org  ')).toBe(true);
-    });
-
-    it('returns false for invalid email formats', () => {
-      expect(isValidEmail('invalid-email')).toBe(false);
-      expect(isValidEmail('user@')).toBe(false);
-      expect(isValidEmail('@example.com')).toBe(false);
-      expect(isValidEmail('')).toBe(false);
-      expect(isValidEmail('   ')).toBe(false);
-    });
-  });
-
-  describe('isValidPassword', () => {
-    it('returns true for passwords with at least 6 characters', () => {
-      expect(isValidPassword('123456')).toBe(true);
-      expect(isValidPassword('strongPassword123!')).toBe(true);
-    });
-
-    it('returns false for passwords shorter than 6 characters', () => {
-      expect(isValidPassword('12345')).toBe(false);
-      expect(isValidPassword('')).toBe(false);
-    });
-  });
-
   describe('validateLoginForm', () => {
     it('returns isValid true when both email and password are valid', () => {
       const result = validateLoginForm({

@@ -30,14 +30,14 @@ export const RestaurantMeta = ({
           </Text>
         </View>
 
-        {speciality ? (
+        {typeof speciality === 'string' && (
           <Badge
             label={speciality.toUpperCase()}
             variant="info"
             style={styles.specialityBadge}
             textStyle={styles.specialityBadgeText}
           />
-        ) : null}
+        )}
       </View>
     </View>
   );

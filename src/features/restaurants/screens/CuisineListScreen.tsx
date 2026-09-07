@@ -10,7 +10,7 @@ export const CuisineListScreen = () => {
   const {
     cuisines,
     isLoading,
-    isRefreshing,
+    isFetching,
     isError,
     refetch,
     handleSelectCuisine,
@@ -49,7 +49,7 @@ export const CuisineListScreen = () => {
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        refreshing={isRefreshing}
+        refreshing={isFetching}
         onRefresh={refetch}
         ListEmptyComponent={<EmptyState message="No cuisines found" />}
       />

@@ -23,7 +23,7 @@ const CuisineHeaderBackButton = () => {
 
   return (
     <Pressable onPress={handleLogout} hitSlop={12} style={styles.headerButton}>
-      <ChevronLeft color={theme.colors.textPrimary} size={20} />
+      <ChevronLeft color={theme.colors.textPrimary} />
     </Pressable>
   );
 };
@@ -37,7 +37,7 @@ const RestaurantHeaderBackButton = () => {
 
   return (
     <Pressable onPress={handleGoBack} hitSlop={12} style={styles.headerButton}>
-      <ChevronLeft color={theme.colors.textPrimary} size={20} />
+      <ChevronLeft color={theme.colors.textPrimary} />
     </Pressable>
   );
 };

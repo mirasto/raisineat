@@ -11,7 +11,6 @@ export const api = createApi({
     baseUrl: API_CONFIG.BASE_URL,
     timeout: API_CONFIG.TIMEOUT_MS,
   }),
-  tagTypes: ['Cuisines'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginCredentials>({
       query: (credentials) => ({
@@ -25,7 +24,6 @@ export const api = createApi({
     }),
     getCuisines: builder.query<CuisinesData, void>({
       query: () => API_CONFIG.ENDPOINTS.CUISINES,
-      providesTags: ['Cuisines'],
       transformResponse: (response: unknown): CuisinesData => {
         const rawData = cuisinesApiResponseSchema.parse(response);
         return adaptCuisinesApiResponse(rawData);

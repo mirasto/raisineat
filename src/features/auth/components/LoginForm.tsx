@@ -4,24 +4,15 @@ import { Button, Input } from '@/shared/ui';
 import { theme } from '@/shared/constants';
 import type { AuthFormErrors } from '../types';
 
-interface LoginFormProps {
+export interface LoginFormProps {
   email: string;
   password: string;
   isLoading: boolean;
   generalError: string | null;
   fieldErrors: AuthFormErrors;
-  shouldShowEmailError?: boolean;
-  shouldShowEmailSuccess?: boolean;
-  shouldShowPasswordError?: boolean;
-  shouldShowPasswordSuccess?: boolean;
-  showEmailError?: boolean;
-  showEmailSuccess?: boolean;
-  showPasswordError?: boolean;
-  showPasswordSuccess?: boolean;
-  onEmailChange?: (text: string) => void;
-  onPasswordChange?: (text: string) => void;
-  onChangeEmail?: (text: string) => void;
-  onChangePassword?: (text: string) => void;
+  isSubmitted: boolean;
+  onChangeEmail: (text: string) => void;
+  onChangePassword: (text: string) => void;
   onClearEmail: () => void;
   onClearPassword: () => void;
   onSubmit: () => void;
@@ -33,28 +24,17 @@ export const LoginForm = ({
   isLoading,
   generalError,
   fieldErrors,
-  shouldShowEmailError,
-  shouldShowEmailSuccess,
-  shouldShowPasswordError,
-  shouldShowPasswordSuccess,
-  showEmailError,
-  showEmailSuccess,
-  showPasswordError,
-  showPasswordSuccess,
-  onEmailChange,
-  onPasswordChange,
+  isSubmitted,
   onChangeEmail,
   onChangePassword,
   onClearEmail,
   onClearPassword,
   onSubmit,
 }: LoginFormProps) => {
-  const isEmailError = shouldShowEmailError ?? showEmailError ?? false;
-  const isEmailSuccess = shouldShowEmailSuccess ?? showEmailSuccess ?? false;
-  const isPasswordError = shouldShowPasswordError ?? showPasswordError ?? false;
-  const isPasswordSuccess = shouldShowPasswordSuccess ?? showPasswordSuccess ?? false;
-  const handleEmailInput = onEmailChange ?? onChangeEmail;
-  const handlePasswordInput = onPasswordChange ?? onChangePassword;
+  const isEmailError = isSubmitted && Boolean(fieldErrors.email);
+  const isEmailSuccess = isSubmitted && !fieldErrors.email && email.trim().length > 0;
+  const isPasswordError = isSubmitted && Boolean(fieldErrors.password);
+  const isPasswordSuccess = isSubmitted && !fieldErrors.password && password.length > 0;
 
   const renderEmailAccessory = () => {
     if (isEmailError) {
@@ -67,7 +47,7 @@ export const LoginForm = ({
     if (isEmailSuccess) {
       return <Image source={checkIcon} style={styles.statusIcon} />;
     }
-    return null;
+    return undefined;
   };
 
   const renderPasswordAccessory = () => {
@@ -81,7 +61,7 @@ export const LoginForm = ({
     if (isPasswordSuccess) {
       return <Image source={checkIcon} style={styles.statusIcon} />;
     }
-    return null;
+    return undefined;
   };
 
   return (
@@ -89,31 +69,31 @@ export const LoginForm = ({
       <Text style={styles.title}>Welcome Back</Text>
       <Text style={styles.subtitle}>Hello there, sign in to continue!</Text>
 
-      {generalError ? (
+      {Boolean(generalError) && (
         <View style={styles.generalErrorBanner}>
           <Text style={styles.generalErrorText}>{generalError}</Text>
         </View>
-      ) : null}
+      )}
 
       <Input
         label="Username or email"
         placeholder="Enter username or email"
         value={email}
-        onChangeText={handleEmailInput}
+        onChangeText={onChangeEmail}
         keyboardType="email-address"
         autoCapitalize="none"
         error={fieldErrors.email}
-        rightElement={renderEmailAccessory()}
+        rightIcon={renderEmailAccessory()}
       />
 
       <Input
         label="Password"
         placeholder="Enter password"
         value={password}
-        onChangeText={handlePasswordInput}
+        onChangeText={onChangePassword}
         secureTextEntry
         error={fieldErrors.password}
-        rightElement={renderPasswordAccessory()}
+        rightIcon={renderPasswordAccessory()}
       />
 
       <Button

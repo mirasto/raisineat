@@ -9,5 +9,16 @@ export { useCuisineList } from './hooks/useCuisineList';
 export { useRestaurantList } from './hooks/useRestaurantList';
 export { useRestaurantDetail } from './hooks/useRestaurantDetail';
 export { adaptCuisinesApiResponse } from './adapters';
-export * from './selectors';
-export * from './types';
+export {
+  selectCuisinesResult,
+  selectCuisinesData,
+  selectCuisineList,
+  selectRestaurantsByCuisine,
+  selectRestaurantById,
+} from './selectors';
+export type {
+  Restaurant,
+  RestaurantApiItem,
+  CuisineItem,
+  CuisinesData,
+} from './types';

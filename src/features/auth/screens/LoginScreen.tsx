@@ -40,12 +40,9 @@ export const LoginScreen = () => {
               isLoading={formState.isLoading}
               generalError={formState.generalError}
               fieldErrors={formState.fieldErrors}
-              shouldShowEmailError={formState.shouldShowEmailError}
-              shouldShowEmailSuccess={formState.shouldShowEmailSuccess}
-              shouldShowPasswordError={formState.shouldShowPasswordError}
-              shouldShowPasswordSuccess={formState.shouldShowPasswordSuccess}
-              onEmailChange={formState.handleEmailChange}
-              onPasswordChange={formState.handlePasswordChange}
+              isSubmitted={formState.isSubmitted}
+              onChangeEmail={formState.handleEmailChange}
+              onChangePassword={formState.handlePasswordChange}
               onClearEmail={formState.handleClearEmail}
               onClearPassword={formState.handleClearPassword}
               onSubmit={formState.handleSignIn}

@@ -48,11 +48,14 @@ exports[`Button Component renders snapshot matching default state 1`] = `
 >
   <Text
     style={
-      {
-        "color": "#FFFFFF",
-        "fontSize": 16,
-        "fontWeight": "600",
-      }
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 16,
+          "fontWeight": "600",
+        },
+        undefined,
+      ]
     }
   >
     Submit

@@ -78,16 +78,6 @@ export const useLoginForm = () => {
     }
   };
 
-  const shouldShowEmailError =
-    isSubmitted && Boolean(fieldErrors.email);
-  const shouldShowEmailSuccess =
-    isSubmitted && !fieldErrors.email && email.trim().length > 0;
-
-  const shouldShowPasswordError =
-    isSubmitted && Boolean(fieldErrors.password);
-  const shouldShowPasswordSuccess =
-    isSubmitted && !fieldErrors.password && password.length > 0;
-
   return {
     email,
     password,
@@ -95,14 +85,8 @@ export const useLoginForm = () => {
     generalError,
     fieldErrors,
     isSubmitted,
-    shouldShowEmailError,
-    shouldShowEmailSuccess,
-    shouldShowPasswordError,
-    shouldShowPasswordSuccess,
-    showEmailError: shouldShowEmailError,
-    showEmailSuccess: shouldShowEmailSuccess,
-    showPasswordError: shouldShowPasswordError,
-    showPasswordSuccess: shouldShowPasswordSuccess,
+    showEmailError: isSubmitted && Boolean(fieldErrors.email),
+    showPasswordError: isSubmitted && Boolean(fieldErrors.password),
     handleEmailChange,
     handlePasswordChange,
     handleClearEmail,
