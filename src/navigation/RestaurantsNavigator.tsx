@@ -64,11 +64,7 @@ export const RestaurantsNavigator = () => {
         name="Restaurants"
         component={RestaurantListScreen}
         options={({ route }) => ({
-          headerTitle:
-            route.params?.title ??
-            (route.params?.cuisine
-              ? route.params.cuisine.charAt(0).toUpperCase() + route.params.cuisine.slice(1)
-              : ''),
+          headerTitle: route.params?.title ?? route.params?.cuisine,
           headerTitleStyle: {
             fontSize: 17,
             fontWeight: '600',

@@ -1,7 +1,8 @@
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useGetCuisinesQuery } from '@/api';
 import { RestaurantCard } from '@/components';
+import { Loader } from '@/components/ui';
 import type { Restaurant } from '@/types';
 import type { RestaurantListNavigationProp, RestaurantListRouteProp } from '@/navigation';
 
@@ -10,7 +11,7 @@ export const RestaurantListScreen = () => {
   const route = useRoute<RestaurantListRouteProp>();
   const cuisine = route.params?.cuisine ?? '';
 
-  const { data, isLoading, isError, refetch } = useGetCuisinesQuery();
+  const { data, isLoading, isFetching, isError, refetch } = useGetCuisinesQuery();
 
   const restaurants = data?.restaurantsByCuisine[cuisine.toLowerCase()] ?? [];
 
@@ -22,11 +23,7 @@ export const RestaurantListScreen = () => {
   };
 
   if (isLoading && restaurants.length === 0) {
-    return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#818CF8" />
-      </View>
-    );
+    return <Loader />;
   }
 
   if (isError && restaurants.length === 0) {
@@ -42,12 +39,15 @@ export const RestaurantListScreen = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <FlatList
         data={restaurants}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <RestaurantCard item={item} onPress={handleSelectRestaurant} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        refreshing={isFetching && !isLoading}
+        onRefresh={refetch}
         ListEmptyComponent={
           isLoading ? null : (
             <View style={styles.emptyContainer}>

@@ -1,7 +1,15 @@
-import { Image, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ChevronLeft } from '@/components/ui';
+import { ChevronLeft, Loader } from '@/components/ui';
 import { useGetCuisinesQuery } from '@/api';
 import type { RestaurantDetailNavigationProp, RestaurantDetailRouteProp } from '@/navigation';
 
@@ -9,14 +17,29 @@ export const RestaurantDetailScreen = () => {
   const navigation = useNavigation<RestaurantDetailNavigationProp>();
   const route = useRoute<RestaurantDetailRouteProp>();
   const insets = useSafeAreaInsets();
-  const { restaurantId, title } = route.params;
+  const { restaurantId } = route.params;
 
-  const { data } = useGetCuisinesQuery();
+  const { data, isLoading } = useGetCuisinesQuery();
   const restaurant = data?.restaurantsById[restaurantId];
 
   const handleBack = () => {
     navigation.goBack();
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (!restaurant) {
+    return (
+      <View style={styles.centerContainer}>
+        <Text style={styles.notFoundText}>Restaurant not found</Text>
+        <Pressable style={styles.retryButton} onPress={handleBack}>
+          <Text style={styles.retryButtonText}>Go Back</Text>
+        </Pressable>
+      </View>
+    );
+  }
 
   const getRatingFeedback = (rating: number): string => {
     if (rating >= 8.5) {
@@ -28,11 +51,6 @@ export const RestaurantDetailScreen = () => {
     return 'Satisfactory';
   };
 
-  const displayName = restaurant?.restaurantName ?? title ?? 'Restaurant';
-  const displayDesc = restaurant?.shortDesc ?? 'Delicious cuisine & specialties';
-  const displayRating = restaurant?.rating ?? 8.5;
-  const specialityText = (restaurant?.speciality || 'FOOD').toUpperCase();
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
@@ -43,15 +61,11 @@ export const RestaurantDetailScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.heroContainer}>
-          {restaurant?.imageUrl ? (
-            <Image
-              source={{ uri: restaurant.imageUrl }}
-              style={styles.heroImage}
-              resizeMode="cover"
-            />
-          ) : (
-            <View style={styles.heroPlaceholder} />
-          )}
+          <Image
+            source={{ uri: restaurant.imageUrl }}
+            style={styles.heroImage}
+            resizeMode="cover"
+          />
 
           <View style={styles.heroGradientOverlay} />
 
@@ -63,23 +77,29 @@ export const RestaurantDetailScreen = () => {
             <ChevronLeft color="#FFFFFF" size={24} />
           </Pressable>
 
-          <View style={styles.heroBadgeOverlay}>
-            <View style={styles.specialityBadge}>
-              <Text style={styles.specialityBadgeText}>{specialityText}</Text>
+          {restaurant.speciality ? (
+            <View style={styles.heroBadgeOverlay}>
+              <View style={styles.specialityBadge}>
+                <Text style={styles.specialityBadgeText}>
+                  {restaurant.speciality.toUpperCase()}
+                </Text>
+              </View>
             </View>
-          </View>
+          ) : null}
         </View>
 
         <View style={styles.bodyContent}>
-          <Text style={styles.restaurantName}>{displayName}</Text>
-          <Text style={styles.restaurantDesc}>{displayDesc}</Text>
+          <Text style={styles.restaurantName}>{restaurant.restaurantName}</Text>
+          <Text style={styles.restaurantDesc}>{restaurant.shortDesc}</Text>
 
           <View style={styles.ratingCard}>
             <View style={styles.ratingBadge}>
-              <Text style={styles.ratingBadgeText}>{displayRating.toFixed(1)}</Text>
+              <Text style={styles.ratingBadgeText}>{restaurant.rating.toFixed(1)}</Text>
             </View>
             <View style={styles.ratingInfo}>
-              <Text style={styles.ratingFeedback}>{getRatingFeedback(displayRating)}</Text>
+              <Text style={styles.ratingFeedback}>
+                {getRatingFeedback(restaurant.rating)}
+              </Text>
               <Text style={styles.ratingSubtext}>Based on verified customer reviews</Text>
             </View>
           </View>
@@ -88,17 +108,17 @@ export const RestaurantDetailScreen = () => {
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Delivery Cost</Text>
               <Text style={styles.infoValue}>
-                {restaurant ? `${restaurant.deliveryCost.toFixed(2)} ${restaurant.currency}` : 'Free'}
+                {restaurant.deliveryCost.toFixed(2)} {restaurant.currency}
               </Text>
             </View>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Estimated Delivery</Text>
-              <Text style={styles.infoValue}>{restaurant?.deliveryTime ?? '25-35 min'}</Text>
+              <Text style={styles.infoValue}>{restaurant.deliveryTime}</Text>
             </View>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Minimum Order</Text>
               <Text style={styles.infoValue}>
-                {restaurant ? `${restaurant.minOrder.toFixed(2)} ${restaurant.currency}` : '10.00 EUR'}
+                {restaurant.minOrder.toFixed(2)} {restaurant.currency}
               </Text>
             </View>
             <View style={styles.infoRow}>
@@ -106,10 +126,10 @@ export const RestaurantDetailScreen = () => {
               <Text
                 style={[
                   styles.infoValue,
-                  restaurant?.isOpen ? styles.statusOpen : styles.statusClosed,
+                  restaurant.isClosed ? styles.statusClosed : styles.statusOpen,
                 ]}
               >
-                {restaurant?.isOpen ? 'Open Now' : 'Closed'}
+                {restaurant.isClosed ? 'Closed' : 'Open Now'}
               </Text>
             </View>
           </View>
@@ -124,6 +144,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+    backgroundColor: '#FFFFFF',
+  },
+  notFoundText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#0F172A',
+    marginBottom: 16,
+  },
+  retryButton: {
+    backgroundColor: '#818CF8',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
   scrollContent: {
     paddingBottom: 40,
   },
@@ -136,11 +179,6 @@ const styles = StyleSheet.create({
   heroImage: {
     width: '100%',
     height: '100%',
-  },
-  heroPlaceholder: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#334155',
   },
   heroGradientOverlay: {
     ...StyleSheet.absoluteFillObject,

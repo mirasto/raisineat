@@ -1,21 +1,18 @@
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useGetCuisinesQuery } from '@/api';
 import { CuisineCard } from '@/components';
+import { Loader } from '@/components/ui';
 import type { CuisineListNavigationProp } from '@/navigation';
 
 export const CuisineListScreen = () => {
   const navigation = useNavigation<CuisineListNavigationProp>();
-  const { data, isLoading, isError, refetch } = useGetCuisinesQuery();
+  const { data, isLoading, isFetching, isError, refetch } = useGetCuisinesQuery();
 
   const cuisines = data?.cuisines ?? [];
 
   if (isLoading && cuisines.length === 0) {
-    return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#818CF8" />
-      </View>
-    );
+    return <Loader />;
   }
 
   if (isError && cuisines.length === 0) {
@@ -31,6 +28,7 @@ export const CuisineListScreen = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <FlatList
         data={cuisines}
         keyExtractor={(item) => item.name}
@@ -44,6 +42,15 @@ export const CuisineListScreen = () => {
         )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        refreshing={isFetching && !isLoading}
+        onRefresh={refetch}
+        ListEmptyComponent={
+          isLoading ? null : (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No cuisines found</Text>
+            </View>
+          )
+        }
       />
     </View>
   );
@@ -63,6 +70,15 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 48,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#64748B',
   },
   errorText: {
     fontSize: 16,

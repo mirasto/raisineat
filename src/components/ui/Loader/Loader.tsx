@@ -2,10 +2,10 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { theme } from '@/constants/theme';
 
 interface LoaderProps {
-  message: string;
+  message?: string;
 }
 
-export const Loader = ({ message }: LoaderProps) => {
+export const Loader = ({ message }: LoaderProps = {}) => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color={theme.colors.primary} />
