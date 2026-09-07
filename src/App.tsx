@@ -9,7 +9,7 @@
  */
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { RootNavigator } from './navigation';
+import { RootNavigator } from '@/navigation';
 
 export const App = () => {
   return (
