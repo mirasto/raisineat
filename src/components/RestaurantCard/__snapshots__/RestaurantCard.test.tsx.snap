@@ -133,7 +133,7 @@ exports[`RestaurantCard Component renders snapshot for closed restaurant with ov
           numberOfLines={1}
           style={
             {
-              "color": "#1E293B",
+              "color": "#0F172A",
               "fontSize": 17,
               "fontWeight": "700",
               "marginBottom": 4,
@@ -156,23 +156,39 @@ exports[`RestaurantCard Component renders snapshot for closed restaurant with ov
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "backgroundColor": "#E0F2FE",
-            "borderRadius": 8,
-            "justifyContent": "center",
-            "paddingHorizontal": 10,
-            "paddingVertical": 6,
-          }
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 6,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+            },
+            {
+              "backgroundColor": "#E0F2FE",
+            },
+            {
+              "borderRadius": 6,
+              "paddingHorizontal": 10,
+              "paddingVertical": 6,
+            },
+          ]
         }
       >
         <Text
           style={
-            {
-              "color": "#0284C7",
-              "fontSize": 12,
-              "fontWeight": "700",
-            }
+            [
+              {
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#0284C7",
+              },
+              {
+                "fontSize": 12,
+                "fontWeight": "700",
+              },
+            ]
           }
         >
           30-40 min
@@ -329,7 +345,7 @@ exports[`RestaurantCard Component renders snapshot for open restaurant correctly
           numberOfLines={1}
           style={
             {
-              "color": "#1E293B",
+              "color": "#0F172A",
               "fontSize": 17,
               "fontWeight": "700",
               "marginBottom": 4,
@@ -352,23 +368,39 @@ exports[`RestaurantCard Component renders snapshot for open restaurant correctly
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "backgroundColor": "#E0F2FE",
-            "borderRadius": 8,
-            "justifyContent": "center",
-            "paddingHorizontal": 10,
-            "paddingVertical": 6,
-          }
+          [
+            {
+              "alignSelf": "flex-start",
+              "borderRadius": 6,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+            },
+            {
+              "backgroundColor": "#E0F2FE",
+            },
+            {
+              "borderRadius": 6,
+              "paddingHorizontal": 10,
+              "paddingVertical": 6,
+            },
+          ]
         }
       >
         <Text
           style={
-            {
-              "color": "#0284C7",
-              "fontSize": 12,
-              "fontWeight": "700",
-            }
+            [
+              {
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#0284C7",
+              },
+              {
+                "fontSize": 12,
+                "fontWeight": "700",
+              },
+            ]
           }
         >
           30-40 min

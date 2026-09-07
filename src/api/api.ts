@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { z } from 'zod';
 import { API_CONFIG } from '@/constants/api';
 import { CUISINE_IMAGES } from '@/assets/images';
+import { cuisinesApiResponseSchema, loginResponseSchema } from './schemas';
 import type {
   CuisineItem,
   CuisinesData,
@@ -10,35 +10,11 @@ import type {
   Restaurant,
 } from '@/types';
 
-const restaurantItemSchema = z.object({
-  id: z.string(),
-  restaurantName: z.string(),
-  shortDesc: z.string(),
-  currency: z.string(),
-  deliveryCost: z.number(),
-  rating: z.number(),
-  minOrder: z.number(),
-  deliveryTime: z.string(),
-  speciality: z.string().optional(),
-  imageUrl: z.string(),
-});
-
-const cuisineGroupSchema = z.object({
-  open: z.array(restaurantItemSchema),
-  close: z.array(restaurantItemSchema),
-});
-
-const cuisinesApiResponseSchema = z.record(z.string(), cuisineGroupSchema);
-
-const loginResponseSchema = z.object({
-  message: z.string(),
-  userId: z.number(),
-});
-
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: API_CONFIG.BASE_URL,
+    timeout: API_CONFIG.TIMEOUT_MS,
   }),
   tagTypes: ['Cuisines'],
   endpoints: (builder) => ({
@@ -95,8 +71,4 @@ export const api = createApi({
   }),
 });
 
-export const {
-  useLoginMutation,
-  useGetCuisinesQuery,
-  useLazyGetCuisinesQuery,
-} = api;
+export const { useLoginMutation, useGetCuisinesQuery } = api;

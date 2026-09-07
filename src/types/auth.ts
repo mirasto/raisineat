@@ -1,16 +1,8 @@
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
+import type { z } from 'zod';
+import type { loginCredentialsSchema, loginResponseSchema } from '@/api/schemas';
 
-export interface LoginResponse {
-  message: string;
-  userId: number;
-}
-
-export interface LoginErrorResponse {
-  error: string;
-}
+export type LoginCredentials = z.infer<typeof loginCredentialsSchema>;
+export type LoginResponse = z.infer<typeof loginResponseSchema>;
 
 export interface AuthFormErrors {
   email?: string;

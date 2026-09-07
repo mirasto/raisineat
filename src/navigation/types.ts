@@ -12,12 +12,7 @@ export type RestaurantsStackParamList = {
   Detail: { restaurantId: string; title?: string };
 };
 
-export type DashboardStackParamList = RestaurantsStackParamList;
 
-export type RootStackParamList = {
-  Auth: undefined;
-  App: undefined;
-};
 
 export type SplashScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Splash'>;
 

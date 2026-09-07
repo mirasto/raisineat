@@ -1,24 +1,8 @@
 import type { ImageSourcePropType } from 'react-native';
+import type { z } from 'zod';
+import type { restaurantItemSchema } from '@/api/schemas';
 
-export interface RestaurantApiItem {
-  id: string;
-  restaurantName: string;
-  shortDesc: string;
-  currency: string;
-  deliveryCost: number;
-  rating: number;
-  minOrder: number;
-  deliveryTime: string;
-  speciality?: string;
-  imageUrl: string;
-}
-
-export interface CuisineGroupApiItem {
-  open: RestaurantApiItem[];
-  close: RestaurantApiItem[];
-}
-
-export type CuisinesApiResponse = Record<string, CuisineGroupApiItem>;
+export type RestaurantApiItem = z.infer<typeof restaurantItemSchema>;
 
 export interface Restaurant extends RestaurantApiItem {
   isOpen: boolean;

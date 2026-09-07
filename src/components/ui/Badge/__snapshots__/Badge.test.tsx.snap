@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge Component renders danger variant correctly 1`] = `
+<View
+  style={
+    [
+      {
+        "alignSelf": "flex-start",
+        "borderRadius": 6,
+        "paddingHorizontal": 8,
+        "paddingVertical": 4,
+      },
+      {
+        "backgroundColor": "#FEE2E2",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 12,
+          "fontWeight": "600",
+        },
+        {
+          "color": "#B91C1C",
+        },
+        undefined,
+      ]
+    }
+  >
+    Error
+  </Text>
+</View>
+`;
+
+exports[`Badge Component renders info variant snapshot correctly 1`] = `
+<View
+  style={
+    [
+      {
+        "alignSelf": "flex-start",
+        "borderRadius": 6,
+        "paddingHorizontal": 8,
+        "paddingVertical": 4,
+      },
+      {
+        "backgroundColor": "#E0F2FE",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 12,
+          "fontWeight": "600",
+        },
+        {
+          "color": "#0284C7",
+        },
+        undefined,
+      ]
+    }
+  >
+    20-30 min
+  </Text>
+</View>
+`;
+
+exports[`Badge Component renders snapshot matching default state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignSelf": "flex-start",
+        "borderRadius": 6,
+        "paddingHorizontal": 8,
+        "paddingVertical": 4,
+      },
+      {
+        "backgroundColor": "#F3F4F6",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 12,
+          "fontWeight": "600",
+        },
+        {
+          "color": "#64748B",
+        },
+        undefined,
+      ]
+    }
+  >
+    Default
+  </Text>
+</View>
+`;

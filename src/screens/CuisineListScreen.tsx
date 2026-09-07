@@ -1,56 +1,65 @@
-import { FlatList, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useGetCuisinesQuery } from '@/api';
-import { CuisineCard } from '@/components';
-import { Loader } from '@/components/ui';
-import type { CuisineListNavigationProp } from '@/navigation';
+import { useCallback } from 'react';
+import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
+import { CuisineCard, CUISINE_CARD_TOTAL_HEIGHT } from '@/components';
+import { EmptyState, ErrorState, Loader } from '@/components/ui';
+import { theme } from '@/constants/theme';
+import { useCuisineList } from './hooks/useCuisineList';
+import type { CuisineItem } from '@/types';
 
 export const CuisineListScreen = () => {
-  const navigation = useNavigation<CuisineListNavigationProp>();
-  const { data, isLoading, isFetching, isError, refetch } = useGetCuisinesQuery();
+  const {
+    cuisines,
+    isLoading,
+    isRefreshing,
+    isError,
+    refetch,
+    handleSelectCuisine,
+  } = useCuisineList();
 
-  const cuisines = data?.cuisines ?? [];
+  const renderItem = useCallback(
+    ({ item }: { item: CuisineItem }) => (
+      <CuisineCard
+        title={item.title}
+        placesCount={item.placesCount}
+        image={item.image}
+        onPress={() => handleSelectCuisine(item.name, item.title)}
+      />
+    ),
+    [handleSelectCuisine]
+  );
 
-  if (isLoading && cuisines.length === 0) {
+  const keyExtractor = useCallback((item: CuisineItem) => item.name, []);
+
+  const getItemLayout = useCallback(
+    (_: unknown, index: number) => ({
+      length: CUISINE_CARD_TOTAL_HEIGHT,
+      offset: CUISINE_CARD_TOTAL_HEIGHT * index,
+      index,
+    }),
+    []
+  );
+
+  if (isLoading) {
     return <Loader />;
   }
 
-  if (isError && cuisines.length === 0) {
-    return (
-      <View style={styles.centerContainer}>
-        <Text style={styles.errorText}>Failed to load cuisines</Text>
-        <Pressable style={styles.retryButton} onPress={refetch}>
-          <Text style={styles.retryButtonText}>Try Again</Text>
-        </Pressable>
-      </View>
-    );
+  if (isError) {
+    return <ErrorState message="Failed to load cuisines" onRetry={refetch} />;
   }
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.card} />
       <FlatList
         data={cuisines}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => (
-          <CuisineCard
-            title={item.title}
-            placesCount={item.placesCount}
-            image={item.image}
-            onPress={() => navigation.navigate('Restaurants', { cuisine: item.name, title: item.title })}
-          />
-        )}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        getItemLayout={getItemLayout}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        refreshing={isFetching && !isLoading}
+        refreshing={isRefreshing}
         onRefresh={refetch}
-        ListEmptyComponent={
-          isLoading ? null : (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>No cuisines found</Text>
-            </View>
-          )
-        }
+        ListEmptyComponent={<EmptyState message="No cuisines found" />}
       />
     </View>
   );
@@ -59,41 +68,9 @@ export const CuisineListScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: theme.colors.background,
   },
   listContent: {
-    padding: 16,
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 48,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#64748B',
-  },
-  errorText: {
-    fontSize: 16,
-    color: '#EF4444',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  retryButton: {
-    backgroundColor: '#818CF8',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
+    padding: theme.spacing.md,
   },
 });

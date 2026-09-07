@@ -2,6 +2,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { ChevronLeft } from '@/components/ui';
+import { theme } from '@/constants/theme';
 import {
   CuisineListScreen,
   RestaurantDetailScreen,
@@ -22,7 +23,7 @@ const CuisineHeaderBackButton = () => {
 
   return (
     <Pressable onPress={handleLogout} hitSlop={12} style={styles.headerButton}>
-      <ChevronLeft color="#0F172A" size={20} />
+      <ChevronLeft color={theme.colors.textPrimary} size={20} />
     </Pressable>
   );
 };
@@ -36,7 +37,7 @@ const RestaurantHeaderBackButton = () => {
 
   return (
     <Pressable onPress={handleGoBack} hitSlop={12} style={styles.headerButton}>
-      <ChevronLeft color="#0F172A" size={20} />
+      <ChevronLeft color={theme.colors.textPrimary} size={20} />
     </Pressable>
   );
 };
@@ -47,9 +48,9 @@ export const RestaurantsNavigator = () => {
       initialRouteName="Cuisines"
       screenOptions={{
         headerShadowVisible: false,
-        headerStyle: { backgroundColor: '#FFFFFF' },
+        headerStyle: { backgroundColor: theme.colors.card },
         headerTitleAlign: 'center',
-        headerTintColor: '#0F172A',
+        headerTintColor: theme.colors.textPrimary,
       }}
     >
       <Stack.Screen
@@ -68,7 +69,7 @@ export const RestaurantsNavigator = () => {
           headerTitleStyle: {
             fontSize: 17,
             fontWeight: '600',
-            color: '#0F172A',
+            color: theme.colors.textPrimary,
           },
           headerLeft: RestaurantHeaderBackButton,
         })}
@@ -89,5 +90,3 @@ const styles = StyleSheet.create({
     padding: 4,
   },
 });
-
-export const DashboardNavigator = RestaurantsNavigator;

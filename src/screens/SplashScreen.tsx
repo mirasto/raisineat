@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -9,40 +8,16 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 import { splashLogo } from '@/assets/icons';
-import type { SplashScreenNavigationProp } from '@/navigation';
+import { theme } from '@/constants/theme';
+import { useSplashAnimation } from './hooks/useSplashAnimation';
 
 export const SplashScreen = () => {
-  const navigation = useNavigation<SplashScreenNavigationProp>();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.85)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 900,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 6,
-        tension: 40,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
-    const timer = setTimeout(() => {
-      navigation.replace('Login');
-    }, 2400);
-
-    return () => clearTimeout(timer);
-  }, [fadeAnim, scaleAnim, navigation]);
+  const { fadeAnim, scaleAnim } = useSplashAnimation();
 
   return (
     <LinearGradient
-      colors={['#38BDF8', '#818CF8', '#A855F7', '#C026D3']}
+      colors={[...theme.colors.gradientSplash]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}

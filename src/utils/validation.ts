@@ -1,24 +1,22 @@
 import { z } from 'zod';
+import { loginCredentialsSchema } from '@/api/schemas';
 import type { AuthFormErrors, LoginCredentials, ValidationResult } from '../types';
 
-export const loginSchema = z.object({
-  email: z.string().trim().min(1, 'Email is required').email('Invalid email address'),
-  password: z
-    .string()
-    .min(1, 'Password is required')
-    .min(6, 'Password must be at least 6 characters'),
-});
+const emailFormatSchema = z.string().trim().email();
+const passwordLengthSchema = z.string().min(6);
+
+export const loginSchema = loginCredentialsSchema;
 
 export const isValidEmail = (email: string): boolean => {
   const trimmed = email.trim();
   if (!trimmed) {
     return false;
   }
-  return z.string().email().safeParse(trimmed).success;
+  return emailFormatSchema.safeParse(trimmed).success;
 };
 
 export const isValidPassword = (password: string): boolean => {
-  return z.string().min(6).safeParse(password).success;
+  return passwordLengthSchema.safeParse(password).success;
 };
 
 export const validateLoginForm = (credentials: LoginCredentials): ValidationResult => {
@@ -33,8 +31,8 @@ export const validateLoginForm = (credentials: LoginCredentials): ValidationResu
 
   const errors: AuthFormErrors = {};
   for (const issue of result.error.issues) {
-    const field = issue.path[0] as keyof AuthFormErrors;
-    if (field && !errors[field]) {
+    const field = issue.path[0];
+    if ((field === 'email' || field === 'password') && !errors[field]) {
       errors[field] = issue.message;
     }
   }

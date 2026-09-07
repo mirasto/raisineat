@@ -1,6 +1,1 @@
-export {
-  api,
-  useLoginMutation,
-  useGetCuisinesQuery,
-  useLazyGetCuisinesQuery,
-} from './api';
+export { api, useLoginMutation, useGetCuisinesQuery } from './api';

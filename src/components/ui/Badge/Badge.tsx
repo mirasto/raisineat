@@ -1,18 +1,19 @@
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@/constants/theme';
 
-type BadgeVariant = 'success' | 'danger' | 'info' | 'default';
+export type BadgeVariant = 'success' | 'danger' | 'info' | 'default';
 
-interface BadgeProps {
+export interface BadgeProps {
   label: string;
-  variant: BadgeVariant;
-  style: ViewStyle;
+  variant?: BadgeVariant;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
-export const Badge = ({ label, variant = 'default', style }: BadgeProps) => {
+export const Badge = ({ label, variant = 'default', style, textStyle }: BadgeProps) => {
   return (
     <View style={[styles.badge, styles[variant], style]}>
-      <Text style={[styles.text, styles[`${variant}Text`]]}>{label}</Text>
+      <Text style={[styles.text, styles[`${variant}Text`], textStyle]}>{label}</Text>
     </View>
   );
 };

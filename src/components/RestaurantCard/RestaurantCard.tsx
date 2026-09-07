@@ -1,12 +1,15 @@
+import { memo } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Badge } from '@/components/ui';
+import { theme } from '@/constants/theme';
 import type { Restaurant } from '@/types';
 
-interface RestaurantCardProps {
+export interface RestaurantCardProps {
   item: Restaurant;
   onPress: (restaurant: Restaurant) => void;
 }
 
-export const RestaurantCard = ({ item, onPress }: RestaurantCardProps) => {
+export const RestaurantCard = memo(({ item, onPress }: RestaurantCardProps) => {
   return (
     <Pressable
       style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
@@ -32,9 +35,12 @@ export const RestaurantCard = ({ item, onPress }: RestaurantCardProps) => {
             </Text>
           </View>
 
-          <View style={styles.deliveryBadge}>
-            <Text style={styles.deliveryTimeText}>{item.deliveryTime}</Text>
-          </View>
+          <Badge
+            label={item.deliveryTime}
+            variant="info"
+            style={styles.deliveryBadge}
+            textStyle={styles.deliveryTimeText}
+          />
         </View>
 
         <View style={styles.footerRow}>
@@ -46,12 +52,14 @@ export const RestaurantCard = ({ item, onPress }: RestaurantCardProps) => {
       </View>
     </Pressable>
   );
-};
+});
+
+RestaurantCard.displayName = 'RestaurantCard';
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.borderRadius.xl,
     marginBottom: 16,
     overflow: 'hidden',
     shadowColor: '#000000',
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 160,
     position: 'relative',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: theme.colors.background,
   },
   image: {
     width: '100%',
@@ -103,25 +111,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#1E293B',
+    color: theme.colors.textPrimary,
     marginBottom: 4,
   },
   description: {
     fontSize: 14,
-    color: '#64748B',
+    color: theme.colors.textSecondary,
   },
   deliveryBadge: {
-    backgroundColor: '#E0F2FE',
-    borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: theme.borderRadius.sm,
   },
   deliveryTimeText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#0284C7',
   },
   footerRow: {
     flexDirection: 'row',

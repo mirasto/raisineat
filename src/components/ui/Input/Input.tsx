@@ -7,7 +7,6 @@ interface InputProps extends TextInputProps {
   error?: string;
   rightElement?: React.ReactNode;
 }
-// TODO: Divide component input into username and password
 export const Input = forwardRef<TextInput, InputProps>(
   ({ label, error, rightElement, style, ...rest }, ref) => {
     return (
@@ -28,6 +27,8 @@ export const Input = forwardRef<TextInput, InputProps>(
     );
   }
 );
+
+Input.displayName = 'Input';
 
 const styles = StyleSheet.create({
   container: {
