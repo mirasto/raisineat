@@ -1,3 +1,5 @@
+import type { ImageSourcePropType } from 'react-native';
+
 export interface RestaurantApiItem {
   id: string;
   restaurantName: string;
@@ -20,13 +22,19 @@ export type CuisinesApiResponse = Record<string, CuisineGroupApiItem>;
 
 export interface Restaurant extends RestaurantApiItem {
   isOpen: boolean;
+  isClosed: boolean;
   cuisine: string;
 }
 
-export interface CuisineInfo {
-  id: string;
+export interface CuisineItem {
   name: string;
   title: string;
-  openCount: number;
-  totalCount: number;
+  image: ImageSourcePropType;
+  placesCount: number;
+}
+
+export interface CuisinesData {
+  cuisines: CuisineItem[];
+  restaurantsByCuisine: Record<string, Restaurant[]>;
+  restaurantsById: Record<string, Restaurant>;
 }

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { LoginResponse } from '../types';
+import { api } from '@/api';
+import type { LoginResponse } from '@/types';
 
 export interface AuthState {
   isAuthorized: boolean;
@@ -23,6 +24,15 @@ export const authSlice = createSlice({
       state.isAuthorized = false;
       state.userId = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      api.endpoints.login.matchFulfilled,
+      (state, action: PayloadAction<LoginResponse>) => {
+        state.isAuthorized = true;
+        state.userId = action.payload.userId;
+      }
+    );
   },
 });
 

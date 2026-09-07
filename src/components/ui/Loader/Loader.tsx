@@ -2,7 +2,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { theme } from '@/constants/theme';
 
 interface LoaderProps {
-  message?: string;
+  message: string;
 }
 
 export const Loader = ({ message }: LoaderProps) => {

@@ -1,17 +1,14 @@
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useCuisines } from '../hooks/useCuisines';
-import { CuisineCard } from '../components/CuisineCard';
-import type { CuisineInfo } from '../types';
+import { useGetCuisinesQuery } from '@/api';
+import { CuisineCard } from '@/components';
 import type { CuisineListNavigationProp } from '@/navigation';
 
 export const CuisineListScreen = () => {
   const navigation = useNavigation<CuisineListNavigationProp>();
-  const { cuisines, isLoading, error, refresh } = useCuisines();
+  const { data, isLoading, isError, refetch } = useGetCuisinesQuery();
 
-  const handleSelectCuisine = (item: CuisineInfo) => {
-    navigation.navigate('Restaurants', { cuisine: item.name });
-  };
+  const cuisines = data?.cuisines ?? [];
 
   if (isLoading && cuisines.length === 0) {
     return (
@@ -21,11 +18,11 @@ export const CuisineListScreen = () => {
     );
   }
 
-  if (error && cuisines.length === 0) {
+  if (isError && cuisines.length === 0) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={styles.errorText}>{error}</Text>
-        <Pressable style={styles.retryButton} onPress={refresh}>
+        <Text style={styles.errorText}>Failed to load cuisines</Text>
+        <Pressable style={styles.retryButton} onPress={refetch}>
           <Text style={styles.retryButtonText}>Try Again</Text>
         </Pressable>
       </View>
@@ -36,8 +33,15 @@ export const CuisineListScreen = () => {
     <View style={styles.container}>
       <FlatList
         data={cuisines}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <CuisineCard item={item} onPress={handleSelectCuisine} />}
+        keyExtractor={(item) => item.name}
+        renderItem={({ item }) => (
+          <CuisineCard
+            title={item.title}
+            placesCount={item.placesCount}
+            image={item.image}
+            onPress={() => navigation.navigate('Restaurants', { cuisine: item.name, title: item.title })}
+          />
+        )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />

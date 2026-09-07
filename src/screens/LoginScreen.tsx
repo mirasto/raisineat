@@ -15,20 +15,23 @@ import LinearGradient from 'react-native-linear-gradient';
 import { checkIcon, errorIcon } from '@/assets/icons';
 import { Input } from '@/components/ui';
 import { useAppDispatch } from '@/store';
-import { loginSuccess } from '../model/authSlice';
-import { useLogin } from '../hooks/useLogin';
-import { isValidEmail, isValidPassword } from '../utils/validation';
+import { loginSuccess } from '@/store/authSlice';
+import { useLoginMutation } from '@/api';
+import { isValidEmail, isValidPassword, validateLoginForm } from '@/utils/validation';
+import type { AuthFormErrors } from '@/types';
 
 export const LoginScreen = () => {
   const dispatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginMutation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<AuthFormErrors>({});
 
-  const { isLoading, error, fieldErrors, submit, clearErrors } = useLogin({
-    onSuccess: (data) => {
-      dispatch(loginSuccess(data));
-    },
-  });
+  const clearErrors = () => {
+    setError(null);
+    setFieldErrors({});
+  };
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
@@ -55,7 +58,20 @@ export const LoginScreen = () => {
   };
 
   const handleSignIn = async () => {
-    await submit({ email, password });
+    const validation = validateLoginForm({ email, password });
+    if (!validation.isValid) {
+      setFieldErrors(validation.errors);
+      return;
+    }
+
+    clearErrors();
+    const result = await login({ email, password });
+    if ('data' in result && result.data) {
+      dispatch(loginSuccess(result.data));
+    } else {
+      const errorData = result.error as { data?: { error?: string } };
+      setError(errorData?.data?.error ?? 'Invalid email or password');
+    }
   };
 
   const isEmailValid = isValidEmail(email);
@@ -177,59 +193,74 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topSpacer: {
-    height: '38%',
+    flex: 1,
+    minHeight: 80,
   },
   formSheet: {
-    flex: 1,
+    flex: 4,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-    paddingHorizontal: 28,
-    paddingTop: 36,
+    borderTopLeftRadius: 36,
+    borderTopRightRadius: 36,
+    overflow: 'hidden',
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 10,
+    shadowOffset: { width: 0, height: -6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 20,
+    elevation: 12,
   },
   keyboardAvoid: {
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 32,
+    paddingHorizontal: 28,
+    paddingTop: 36,
+    paddingBottom: 48,
   },
   title: {
     fontSize: 28,
-    fontWeight: '400',
-    color: '#0B1527',
+    fontWeight: '800',
+    color: '#0F172A',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 15,
-    color: '#7E8B9B',
+    color: '#64748B',
     marginTop: 6,
-    marginBottom: 32,
+    marginBottom: 28,
   },
   generalErrorBanner: {
-    backgroundColor: '#FEE2E2',
-    borderRadius: 10,
+    backgroundColor: '#FEF2F2',
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    borderRadius: 12,
     padding: 12,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   generalErrorText: {
     color: '#DC2626',
     fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  statusIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
   },
   signInButton: {
-    height: 56,
-    borderRadius: 14,
-    justifyContent: 'center',
+    height: 52,
+    borderRadius: 12,
     alignItems: 'center',
-    marginTop: 32,
+    justifyContent: 'center',
+    marginTop: 16,
   },
   signInButtonActive: {
     backgroundColor: '#818CF8',
+    shadowColor: '#818CF8',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 8,
+    elevation: 4,
   },
   signInButtonDisabled: {
     backgroundColor: '#CBD5E1',
@@ -238,12 +269,9 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   signInButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
     color: '#FFFFFF',
-  },
-  statusIcon: {
-    width: 22,
-    height: 22,
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
 });

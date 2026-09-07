@@ -1,29 +1,34 @@
-import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
-import { CUISINE_IMAGES } from '@/assets/images';
-import type { CuisineInfo } from '../../types';
+import {
+  ImageBackground,
+  ImageSourcePropType,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 interface CuisineCardProps {
-  item: CuisineInfo;
-  onPress: (cuisine: CuisineInfo) => void;
+  title: string;
+  placesCount: number;
+  image: ImageSourcePropType;
+  onPress: () => void;
 }
 
-export const CuisineCard = ({ item, onPress }: CuisineCardProps) => {
-  const imageSource = CUISINE_IMAGES[item.name.toLowerCase()];
-
+export const CuisineCard = ({ title, placesCount, image, onPress }: CuisineCardProps) => {
   return (
     <Pressable
       style={({ pressed }) => [styles.cardContainer, pressed && styles.cardPressed]}
-      onPress={() => onPress(item)}
+      onPress={onPress}
     >
       <ImageBackground
-        source={imageSource}
+        source={image}
         style={styles.cardBackground}
         imageStyle={styles.cardImage}
         resizeMode="cover"
       >
         <View style={styles.headerRow}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.placesCount}>{item.totalCount} places</Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.placesCount}>{placesCount} places</Text>
         </View>
       </ImageBackground>
     </Pressable>

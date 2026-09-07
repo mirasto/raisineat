@@ -2,12 +2,12 @@ import { forwardRef } from 'react';
 import { StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native';
 import { theme } from '@/constants/theme';
 
-export interface InputProps extends TextInputProps {
+interface InputProps extends TextInputProps {
   label: string;
   error?: string;
   rightElement?: React.ReactNode;
 }
-
+// TODO: Divide component input into username and password
 export const Input = forwardRef<TextInput, InputProps>(
   ({ label, error, rightElement, style, ...rest }, ref) => {
     return (
@@ -28,8 +28,6 @@ export const Input = forwardRef<TextInput, InputProps>(
     );
   }
 );
-
-Input.displayName = 'Input';
 
 const styles = StyleSheet.create({
   container: {

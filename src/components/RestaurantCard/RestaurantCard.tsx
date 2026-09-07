@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import type { Restaurant } from '../../types';
+import type { Restaurant } from '@/types';
 
 interface RestaurantCardProps {
   item: Restaurant;
@@ -7,13 +7,6 @@ interface RestaurantCardProps {
 }
 
 export const RestaurantCard = ({ item, onPress }: RestaurantCardProps) => {
-  const currencySymbol =
-    item.currency === 'EUR' ? '€' : item.currency === 'USD' ? '$' : item.currency;
-
-  const deliveryParts = (item.deliveryTime || '').split(' ');
-  const deliveryTimeValue = deliveryParts[0] || item.deliveryTime;
-  const deliveryTimeUnit = deliveryParts[1] || 'min';
-
   return (
     <Pressable
       style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
@@ -21,11 +14,11 @@ export const RestaurantCard = ({ item, onPress }: RestaurantCardProps) => {
     >
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.imageUrl }} style={styles.image} resizeMode="cover" />
-        {item.isOpen ? null : (
+        {item.isClosed ? (
           <View style={styles.closedOverlay}>
             <Text style={styles.closedText}>Closed</Text>
           </View>
-        )}
+        ) : null}
       </View>
 
       <View style={styles.content}>
@@ -40,15 +33,13 @@ export const RestaurantCard = ({ item, onPress }: RestaurantCardProps) => {
           </View>
 
           <View style={styles.deliveryBadge}>
-            <Text style={styles.deliveryTimeText}>{deliveryTimeValue}</Text>
-            <Text style={styles.deliveryUnitText}>{deliveryTimeUnit}</Text>
+            <Text style={styles.deliveryTimeText}>{item.deliveryTime}</Text>
           </View>
         </View>
 
         <View style={styles.footerRow}>
           <Text style={styles.metaItem}>
-            🚲 {currencySymbol}
-            {item.deliveryCost.toFixed(2)}
+            🚲 {item.deliveryCost.toFixed(2)} {item.currency}
           </Text>
           <Text style={styles.metaItem}>😊 {item.rating.toFixed(1)}</Text>
         </View>
@@ -62,22 +53,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
     marginBottom: 16,
+    overflow: 'hidden',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 3,
-    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#F1F5F9',
   },
   cardPressed: {
-    opacity: 0.92,
+    opacity: 0.94,
     transform: [{ scale: 0.99 }],
   },
   imageContainer: {
     width: '100%',
-    height: 165,
-    backgroundColor: '#E2E8F0',
+    height: 160,
     position: 'relative',
+    backgroundColor: '#F8FAFC',
   },
   image: {
     width: '100%',
@@ -85,13 +78,13 @@ const styles = StyleSheet.create({
   },
   closedOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
-    justifyContent: 'center',
+    backgroundColor: 'rgba(15, 23, 42, 0.6)',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   closedText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -124,19 +117,11 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 54,
   },
   deliveryTimeText: {
     fontSize: 12,
     fontWeight: '700',
     color: '#0284C7',
-    lineHeight: 14,
-  },
-  deliveryUnitText: {
-    fontSize: 11,
-    fontWeight: '500',
-    color: '#0284C7',
-    lineHeight: 13,
   },
   footerRow: {
     flexDirection: 'row',
@@ -149,7 +134,7 @@ const styles = StyleSheet.create({
   },
   metaItem: {
     fontSize: 13,
-    color: '#64748B',
-    fontWeight: '500',
+    fontWeight: '600',
+    color: '#475569',
   },
 });

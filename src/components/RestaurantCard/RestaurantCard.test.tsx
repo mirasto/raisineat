@@ -1,7 +1,7 @@
 import renderer, { act } from 'react-test-renderer';
 import { Pressable } from 'react-native';
 import { RestaurantCard } from './RestaurantCard';
-import type { Restaurant } from '../../types';
+import type { Restaurant } from '@/types';
 
 describe('RestaurantCard Component', () => {
   const mockOpenRestaurant: Restaurant = {
@@ -15,6 +15,7 @@ describe('RestaurantCard Component', () => {
     deliveryTime: '30-40 min',
     imageUrl: 'https://example.com/pizza.jpg',
     isOpen: true,
+    isClosed: false,
     cuisine: 'italian',
   };
 
@@ -23,6 +24,7 @@ describe('RestaurantCard Component', () => {
     id: 'r2',
     restaurantName: 'Closed Trattoria',
     isOpen: false,
+    isClosed: true,
   };
 
   it('renders snapshot for open restaurant correctly', () => {

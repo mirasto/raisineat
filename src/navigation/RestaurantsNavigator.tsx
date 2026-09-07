@@ -6,10 +6,9 @@ import {
   CuisineListScreen,
   RestaurantDetailScreen,
   RestaurantListScreen,
-} from '@/features/restaurants';
-import { formatCuisineTitle } from '@/features/restaurants/utils/normalizers';
+} from '@/screens';
 import { useAppDispatch } from '@/store';
-import { logout } from '@/features/auth/model/authSlice';
+import { logout } from '@/store/authSlice';
 import type { RestaurantsStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RestaurantsStackParamList>();
@@ -65,7 +64,11 @@ export const RestaurantsNavigator = () => {
         name="Restaurants"
         component={RestaurantListScreen}
         options={({ route }) => ({
-          headerTitle: formatCuisineTitle(route.params.cuisine),
+          headerTitle:
+            route.params?.title ??
+            (route.params?.cuisine
+              ? route.params.cuisine.charAt(0).toUpperCase() + route.params.cuisine.slice(1)
+              : ''),
           headerTitleStyle: {
             fontSize: 17,
             fontWeight: '600',

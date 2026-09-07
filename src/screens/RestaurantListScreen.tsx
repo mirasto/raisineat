@@ -1,8 +1,8 @@
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useRestaurants } from '../hooks/useRestaurants';
-import { RestaurantCard } from '../components/RestaurantCard';
-import type { Restaurant } from '../types';
+import { useGetCuisinesQuery } from '@/api';
+import { RestaurantCard } from '@/components';
+import type { Restaurant } from '@/types';
 import type { RestaurantListNavigationProp, RestaurantListRouteProp } from '@/navigation';
 
 export const RestaurantListScreen = () => {
@@ -10,7 +10,9 @@ export const RestaurantListScreen = () => {
   const route = useRoute<RestaurantListRouteProp>();
   const cuisine = route.params?.cuisine ?? '';
 
-  const { restaurants, isLoading, error, refresh } = useRestaurants({ cuisine });
+  const { data, isLoading, isError, refetch } = useGetCuisinesQuery();
+
+  const restaurants = data?.restaurantsByCuisine[cuisine.toLowerCase()] ?? [];
 
   const handleSelectRestaurant = (item: Restaurant) => {
     navigation.navigate('Detail', {
@@ -27,11 +29,11 @@ export const RestaurantListScreen = () => {
     );
   }
 
-  if (error && restaurants.length === 0) {
+  if (isError && restaurants.length === 0) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={styles.errorText}>{error}</Text>
-        <Pressable style={styles.retryButton} onPress={refresh}>
+        <Text style={styles.errorText}>Failed to load restaurants</Text>
+        <Pressable style={styles.retryButton} onPress={refetch}>
           <Text style={styles.retryButtonText}>Try Again</Text>
         </Pressable>
       </View>
@@ -74,12 +76,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   emptyContainer: {
-    padding: 40,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 48,
   },
   emptyText: {
     fontSize: 16,
-    color: '#94A3B8',
+    color: '#64748B',
   },
   errorText: {
     fontSize: 16,

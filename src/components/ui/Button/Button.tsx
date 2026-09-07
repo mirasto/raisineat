@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { theme } from '@/constants/theme';
 
-export interface ButtonProps extends Omit<PressableProps, 'style'> {
+interface ButtonProps extends Omit<PressableProps, 'style'> {
   title: string;
   loading?: boolean;
   style?: ViewStyle;

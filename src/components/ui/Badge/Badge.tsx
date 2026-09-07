@@ -5,8 +5,8 @@ type BadgeVariant = 'success' | 'danger' | 'info' | 'default';
 
 interface BadgeProps {
   label: string;
-  variant?: BadgeVariant;
-  style?: ViewStyle;
+  variant: BadgeVariant;
+  style: ViewStyle;
 }
 
 export const Badge = ({ label, variant = 'default', style }: BadgeProps) => {
