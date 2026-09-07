@@ -9,10 +9,6 @@ import {
 } from 'react-native';
 import { theme } from '@/constants/theme';
 
-export const CUISINE_CARD_HEIGHT = 210;
-export const CUISINE_CARD_MARGIN_BOTTOM = 18;
-export const CUISINE_CARD_TOTAL_HEIGHT = CUISINE_CARD_HEIGHT + CUISINE_CARD_MARGIN_BOTTOM;
-
 export interface CuisineCardProps {
   title: string;
   placesCount: number;
@@ -45,9 +41,9 @@ CuisineCard.displayName = 'CuisineCard';
 
 const styles = StyleSheet.create({
   cardContainer: {
-    height: CUISINE_CARD_HEIGHT,
+    height: 210,
     borderRadius: 20,
-    marginBottom: CUISINE_CARD_MARGIN_BOTTOM,
+    marginBottom: 18,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,

@@ -1,18 +1,25 @@
 import { StyleSheet, View } from 'react-native';
+import { theme } from '@/constants/theme';
 
-interface ChevronLeftProps {
+export interface ChevronLeftProps {
   color?: string;
   size?: number;
 }
 
-export const ChevronLeft = ({ color = '#0F172A', size = 20 }: ChevronLeftProps) => {
+export const ChevronLeft = ({
+  color = theme.colors.textPrimary,
+  size = 20,
+}: ChevronLeftProps) => {
   const innerSize = Math.round(size * 0.55);
-  const containerStyle = { width: size, height: size };
-  const chevronStyle = { width: innerSize, height: innerSize, borderColor: color };
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      <View style={[styles.chevron, chevronStyle]} />
+    <View style={[styles.container, { width: size, height: size }]}>
+      <View
+        style={[
+          styles.chevron,
+          { width: innerSize, height: innerSize, borderColor: color },
+        ]}
+      />
     </View>
   );
 };

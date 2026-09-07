@@ -38,7 +38,9 @@ export const authSlice = createSlice({
 
 export const { loginSuccess, logout } = authSlice.actions;
 
-export const selectIsAuthorized = (state: { auth: AuthState }) => state.auth.isAuthorized;
-export const selectCurrentUserId = (state: { auth: AuthState }) => state.auth.userId;
+export const selectIsAuthorized = (state: { auth: AuthState }): boolean =>
+  state.auth.isAuthorized;
+export const selectCurrentUserId = (state: { auth: AuthState }): number | null =>
+  state.auth.userId;
 
 export const authReducer = authSlice.reducer;

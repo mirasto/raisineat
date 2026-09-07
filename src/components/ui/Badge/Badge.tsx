@@ -10,7 +10,12 @@ export interface BadgeProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-export const Badge = ({ label, variant = 'default', style, textStyle }: BadgeProps) => {
+export const Badge = ({
+  label,
+  variant = 'default',
+  style,
+  textStyle,
+}: BadgeProps) => {
   return (
     <View style={[styles.badge, styles[variant], style]}>
       <Text style={[styles.text, styles[`${variant}Text`], textStyle]}>{label}</Text>

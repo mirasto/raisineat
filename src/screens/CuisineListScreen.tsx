@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
-import { CuisineCard, CUISINE_CARD_TOTAL_HEIGHT } from '@/components';
+import { CuisineCard } from '@/components';
 import { EmptyState, ErrorState, Loader } from '@/components/ui';
 import { theme } from '@/constants/theme';
 import { useCuisineList } from './hooks/useCuisineList';
@@ -22,22 +22,15 @@ export const CuisineListScreen = () => {
         title={item.title}
         placesCount={item.placesCount}
         image={item.image}
-        onPress={() => handleSelectCuisine(item.name, item.title)}
+        onPress={() =>
+          handleSelectCuisine({ name: item.name, title: item.title })
+        }
       />
     ),
     [handleSelectCuisine]
   );
 
   const keyExtractor = useCallback((item: CuisineItem) => item.name, []);
-
-  const getItemLayout = useCallback(
-    (_: unknown, index: number) => ({
-      length: CUISINE_CARD_TOTAL_HEIGHT,
-      offset: CUISINE_CARD_TOTAL_HEIGHT * index,
-      index,
-    }),
-    []
-  );
 
   if (isLoading) {
     return <Loader />;
@@ -54,7 +47,6 @@ export const CuisineListScreen = () => {
         data={cuisines}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        getItemLayout={getItemLayout}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         refreshing={isRefreshing}

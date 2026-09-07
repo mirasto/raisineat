@@ -13,7 +13,7 @@ export const theme = {
     errorLight: '#FEE2E2',
     success: '#15803D',
     successLight: '#DCFCE7',
-    gradientSplash: ['#38BDF8', '#818CF8', '#A855F7', '#C026D3'] as const,
+    gradientSplash: ['#38BDF8', '#818CF8', '#A855F7', '#C026D3'],
   },
   spacing: {
     xs: 4,

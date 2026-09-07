@@ -12,12 +12,12 @@ export const useLoginForm = () => {
   const [fieldErrors, setFieldErrors] = useState<AuthFormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const clearErrors = () => {
+  const clearErrors = (): void => {
     setGeneralError(null);
     setFieldErrors({});
   };
 
-  const handleEmailChange = (text: string) => {
+  const handleEmailChange = (text: string): void => {
     setEmail(text);
     if (fieldErrors.email || generalError) {
       setFieldErrors((prev) => ({ ...prev, email: undefined }));
@@ -25,7 +25,7 @@ export const useLoginForm = () => {
     }
   };
 
-  const handlePasswordChange = (text: string) => {
+  const handlePasswordChange = (text: string): void => {
     setPassword(text);
     if (fieldErrors.password || generalError) {
       setFieldErrors((prev) => ({ ...prev, password: undefined }));
@@ -33,17 +33,17 @@ export const useLoginForm = () => {
     }
   };
 
-  const handleClearEmail = () => {
+  const handleClearEmail = (): void => {
     setEmail('');
     setFieldErrors((prev) => ({ ...prev, email: undefined }));
   };
 
-  const handleClearPassword = () => {
+  const handleClearPassword = (): void => {
     setPassword('');
     setFieldErrors((prev) => ({ ...prev, password: undefined }));
   };
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (): Promise<void> => {
     setIsSubmitted(true);
     const validation = validateLoginForm({ email, password });
 
@@ -54,31 +54,39 @@ export const useLoginForm = () => {
 
     clearErrors();
 
-    const result = await login({ email, password });
+    try {
+      const result = await login({ email, password });
 
-    if ('error' in result) {
-      const errorObj = result.error;
-      if (
-        errorObj &&
-        typeof errorObj === 'object' &&
-        'data' in errorObj &&
-        errorObj.data &&
-        typeof errorObj.data === 'object' &&
-        'error' in errorObj.data &&
-        typeof (errorObj.data as { error: unknown }).error === 'string'
-      ) {
-        setGeneralError((errorObj.data as { error: string }).error);
-      } else {
-        setGeneralError('Invalid email or password');
+      if ('error' in result) {
+        const errorObj = result.error;
+        if (
+          errorObj &&
+          typeof errorObj === 'object' &&
+          'data' in errorObj &&
+          errorObj.data &&
+          typeof errorObj.data === 'object' &&
+          'error' in errorObj.data &&
+          typeof (errorObj.data as { error: unknown }).error === 'string'
+        ) {
+          setGeneralError((errorObj.data as { error: string }).error);
+        } else {
+          setGeneralError('Invalid email or password');
+        }
       }
+    } catch {
+      setGeneralError('An unexpected error occurred. Please try again.');
     }
   };
 
-  const showEmailError = isSubmitted && Boolean(fieldErrors.email);
-  const showEmailSuccess = isSubmitted && !fieldErrors.email && email.trim().length > 0;
+  const shouldShowEmailError =
+    isSubmitted && Boolean(fieldErrors.email);
+  const shouldShowEmailSuccess =
+    isSubmitted && !fieldErrors.email && email.trim().length > 0;
 
-  const showPasswordError = isSubmitted && Boolean(fieldErrors.password);
-  const showPasswordSuccess = isSubmitted && !fieldErrors.password && password.length > 0;
+  const shouldShowPasswordError =
+    isSubmitted && Boolean(fieldErrors.password);
+  const shouldShowPasswordSuccess =
+    isSubmitted && !fieldErrors.password && password.length > 0;
 
   return {
     email,
@@ -87,10 +95,14 @@ export const useLoginForm = () => {
     generalError,
     fieldErrors,
     isSubmitted,
-    showEmailError,
-    showEmailSuccess,
-    showPasswordError,
-    showPasswordSuccess,
+    shouldShowEmailError,
+    shouldShowEmailSuccess,
+    shouldShowPasswordError,
+    shouldShowPasswordSuccess,
+    showEmailError: shouldShowEmailError,
+    showEmailSuccess: shouldShowEmailSuccess,
+    showPasswordError: shouldShowPasswordError,
+    showPasswordSuccess: shouldShowPasswordSuccess,
     handleEmailChange,
     handlePasswordChange,
     handleClearEmail,

@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator<RestaurantsStackParamList>();
 const CuisineHeaderBackButton = () => {
   const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     dispatch(logout());
   };
 
@@ -31,7 +31,7 @@ const CuisineHeaderBackButton = () => {
 const RestaurantHeaderBackButton = () => {
   const navigation = useNavigation();
 
-  const handleGoBack = () => {
+  const handleGoBack = (): void => {
     navigation.goBack();
   };
 

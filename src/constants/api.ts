@@ -4,5 +4,5 @@ export const API_CONFIG = {
     LOGIN: '/login',
     CUISINES: '/cuisines',
   },
-  TIMEOUT_MS: 10000,
+  TIMEOUT_MS: 10_000,
 } as const;

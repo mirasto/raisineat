@@ -10,12 +10,18 @@ interface LoginFormProps {
   isLoading: boolean;
   generalError: string | null;
   fieldErrors: AuthFormErrors;
-  showEmailError: boolean;
-  showEmailSuccess: boolean;
-  showPasswordError: boolean;
-  showPasswordSuccess: boolean;
-  onChangeEmail: (text: string) => void;
-  onChangePassword: (text: string) => void;
+  shouldShowEmailError?: boolean;
+  shouldShowEmailSuccess?: boolean;
+  shouldShowPasswordError?: boolean;
+  shouldShowPasswordSuccess?: boolean;
+  showEmailError?: boolean;
+  showEmailSuccess?: boolean;
+  showPasswordError?: boolean;
+  showPasswordSuccess?: boolean;
+  onEmailChange?: (text: string) => void;
+  onPasswordChange?: (text: string) => void;
+  onChangeEmail?: (text: string) => void;
+  onChangePassword?: (text: string) => void;
   onClearEmail: () => void;
   onClearPassword: () => void;
   onSubmit: () => void;
@@ -27,39 +33,52 @@ export const LoginForm = ({
   isLoading,
   generalError,
   fieldErrors,
+  shouldShowEmailError,
+  shouldShowEmailSuccess,
+  shouldShowPasswordError,
+  shouldShowPasswordSuccess,
   showEmailError,
   showEmailSuccess,
   showPasswordError,
   showPasswordSuccess,
+  onEmailChange,
+  onPasswordChange,
   onChangeEmail,
   onChangePassword,
   onClearEmail,
   onClearPassword,
   onSubmit,
 }: LoginFormProps) => {
+  const isEmailError = shouldShowEmailError ?? showEmailError ?? false;
+  const isEmailSuccess = shouldShowEmailSuccess ?? showEmailSuccess ?? false;
+  const isPasswordError = shouldShowPasswordError ?? showPasswordError ?? false;
+  const isPasswordSuccess = shouldShowPasswordSuccess ?? showPasswordSuccess ?? false;
+  const handleEmailInput = onEmailChange ?? onChangeEmail;
+  const handlePasswordInput = onPasswordChange ?? onChangePassword;
+
   const renderEmailAccessory = () => {
-    if (showEmailError) {
+    if (isEmailError) {
       return (
         <Pressable onPress={onClearEmail} hitSlop={8}>
           <Image source={errorIcon} style={styles.statusIcon} />
         </Pressable>
       );
     }
-    if (showEmailSuccess) {
+    if (isEmailSuccess) {
       return <Image source={checkIcon} style={styles.statusIcon} />;
     }
     return null;
   };
 
   const renderPasswordAccessory = () => {
-    if (showPasswordError) {
+    if (isPasswordError) {
       return (
         <Pressable onPress={onClearPassword} hitSlop={8}>
           <Image source={errorIcon} style={styles.statusIcon} />
         </Pressable>
       );
     }
-    if (showPasswordSuccess) {
+    if (isPasswordSuccess) {
       return <Image source={checkIcon} style={styles.statusIcon} />;
     }
     return null;
@@ -80,7 +99,7 @@ export const LoginForm = ({
         label="Username or email"
         placeholder="Enter username or email"
         value={email}
-        onChangeText={onChangeEmail}
+        onChangeText={handleEmailInput}
         keyboardType="email-address"
         autoCapitalize="none"
         error={fieldErrors.email}
@@ -91,7 +110,7 @@ export const LoginForm = ({
         label="Password"
         placeholder="Enter password"
         value={password}
-        onChangeText={onChangePassword}
+        onChangeText={handlePasswordInput}
         secureTextEntry
         error={fieldErrors.password}
         rightElement={renderPasswordAccessory()}

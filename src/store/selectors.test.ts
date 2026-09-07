@@ -60,7 +60,7 @@ describe('Reselect memoized selectors', () => {
     const list = selectCuisineList(mockState as unknown as RootState);
     expect(list).toEqual(mockCuisinesData.cuisines);
     expect(list).toHaveLength(1);
-    expect(list[0].name).toBe('italian');
+    expect(list[0]?.name).toBe('italian');
   });
 
   it('selectCuisineList returns empty array when query has not loaded', () => {

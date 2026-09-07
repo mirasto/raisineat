@@ -6,6 +6,8 @@ import { RestaurantHero } from './components/RestaurantHero';
 import { RestaurantMeta } from './components/RestaurantMeta';
 import { useRestaurantDetail } from './hooks/useRestaurantDetail';
 
+const PADDING_BOTTOM_OFFSET = 24;
+
 export const RestaurantDetailScreen = () => {
   const insets = useSafeAreaInsets();
   const { restaurant, isLoading, ratingFeedback, handleBack } = useRestaurantDetail();
@@ -29,7 +31,7 @@ export const RestaurantDetailScreen = () => {
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
       <ScrollView
-        contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
+        contentContainerStyle={{ paddingBottom: insets.bottom + PADDING_BOTTOM_OFFSET }}
         bounces={false}
         showsVerticalScrollIndicator={false}
       >

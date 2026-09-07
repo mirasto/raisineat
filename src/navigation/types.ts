@@ -12,8 +12,6 @@ export type RestaurantsStackParamList = {
   Detail: { restaurantId: string; title?: string };
 };
 
-
-
 export type SplashScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Splash'>;
 
 export type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;

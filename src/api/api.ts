@@ -1,14 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_CONFIG } from '@/constants/api';
-import { CUISINE_IMAGES } from '@/assets/images';
+import { adaptCuisinesApiResponse } from './adapters';
 import { cuisinesApiResponseSchema, loginResponseSchema } from './schemas';
-import type {
-  CuisineItem,
-  CuisinesData,
-  LoginCredentials,
-  LoginResponse,
-  Restaurant,
-} from '@/types';
+import type { CuisinesData, LoginCredentials, LoginResponse } from '@/types';
 
 export const api = createApi({
   reducerPath: 'api',
@@ -33,39 +27,7 @@ export const api = createApi({
       providesTags: ['Cuisines'],
       transformResponse: (response: unknown): CuisinesData => {
         const rawData = cuisinesApiResponseSchema.parse(response);
-        const cuisines: CuisineItem[] = [];
-        const restaurantsByCuisine: Record<string, Restaurant[]> = {};
-        const restaurantsById: Record<string, Restaurant> = {};
-
-        for (const [name, group] of Object.entries(rawData)) {
-          const open = (group.open ?? []).map((r) => ({
-            ...r,
-            isOpen: true,
-            isClosed: false,
-            cuisine: name,
-          }));
-          const close = (group.close ?? []).map((r) => ({
-            ...r,
-            isOpen: false,
-            isClosed: true,
-            cuisine: name,
-          }));
-          const all = [...open, ...close];
-
-          cuisines.push({
-            name,
-            title: name.charAt(0).toUpperCase() + name.slice(1),
-            image: CUISINE_IMAGES[name.toLowerCase()],
-            placesCount: all.length,
-          });
-
-          restaurantsByCuisine[name.toLowerCase()] = all;
-          for (const r of all) {
-            restaurantsById[r.id] = r;
-          }
-        }
-
-        return { cuisines, restaurantsByCuisine, restaurantsById };
+        return adaptCuisinesApiResponse(rawData);
       },
     }),
   }),

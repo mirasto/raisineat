@@ -1,13 +1,10 @@
 import { z } from 'zod';
-import { loginCredentialsSchema } from '@/api/schemas';
-import type { AuthFormErrors, LoginCredentials, ValidationResult } from '../types';
-
+import { loginSchema} from '@/api/schemas';
+import type { AuthFormErrors, LoginCredentials, ValidationResult } from '@/types';
 const emailFormatSchema = z.string().trim().email();
 const passwordLengthSchema = z.string().min(6);
 
-export const loginSchema = loginCredentialsSchema;
-
-export const isValidEmail = (email: string): boolean => {
+export const checkIsValidEmail = (email: string): boolean => {
   const trimmed = email.trim();
   if (!trimmed) {
     return false;
@@ -15,9 +12,12 @@ export const isValidEmail = (email: string): boolean => {
   return emailFormatSchema.safeParse(trimmed).success;
 };
 
-export const isValidPassword = (password: string): boolean => {
+export const checkIsValidPassword = (password: string): boolean => {
   return passwordLengthSchema.safeParse(password).success;
 };
+
+export const isValidEmail = checkIsValidEmail;
+export const isValidPassword = checkIsValidPassword;
 
 export const validateLoginForm = (credentials: LoginCredentials): ValidationResult => {
   const result = loginSchema.safeParse(credentials);

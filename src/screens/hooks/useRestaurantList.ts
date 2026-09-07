@@ -14,7 +14,7 @@ export const useRestaurantList = () => {
   const restaurants = useAppSelector(selectRestaurantsByCuisine(cuisine));
 
   const handleSelectRestaurant = useCallback(
-    (item: Restaurant) => {
+    (item: Restaurant): void => {
       navigation.navigate('Detail', {
         restaurantId: item.id,
         title: item.restaurantName,

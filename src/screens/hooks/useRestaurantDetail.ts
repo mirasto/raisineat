@@ -3,11 +3,16 @@ import { useGetCuisinesQuery } from '@/api';
 import { selectRestaurantById, useAppSelector } from '@/store';
 import type { RestaurantDetailNavigationProp, RestaurantDetailRouteProp } from '@/navigation';
 
+const RATING_THRESHOLD = {
+  VERY_GOOD: 8.5,
+  GOOD: 7.5,
+} as const;
+
 const getRatingFeedback = (rating: number): string => {
-  if (rating >= 8.5) {
+  if (rating >= RATING_THRESHOLD.VERY_GOOD) {
     return 'Very good';
   }
-  if (rating >= 7.5) {
+  if (rating >= RATING_THRESHOLD.GOOD) {
     return 'Good';
   }
   return 'Satisfactory';
@@ -21,7 +26,7 @@ export const useRestaurantDetail = () => {
   const { isLoading } = useGetCuisinesQuery();
   const restaurant = useAppSelector(selectRestaurantById(restaurantId));
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     navigation.goBack();
   };
 
