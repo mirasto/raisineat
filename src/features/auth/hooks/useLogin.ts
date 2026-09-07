@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { login } from '../services/authApi';
+import { login } from '../api/authApi';
 import { validateLoginForm } from '../utils/validation';
 import type { AuthFormErrors, LoginCredentials, LoginResponse } from '../types';
 
