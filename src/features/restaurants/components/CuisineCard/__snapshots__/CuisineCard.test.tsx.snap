@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CuisineCard Component renders snapshot correctly 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "backgroundColor": "#F3F4F6",
+        "borderRadius": 20,
+        "elevation": 4,
+        "height": 210,
+        "marginBottom": 18,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 4,
+          "width": 0,
+        },
+        "shadowOpacity": 0.1,
+        "shadowRadius": 10,
+      },
+      false,
+    ]
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      {
+        "flex": 1,
+        "justifyContent": "flex-start",
+        "paddingHorizontal": 20,
+        "paddingTop": 18,
+      }
+    }
+  >
+    <Image
+      resizeMode="cover"
+      source={{}}
+      style={
+        [
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          {
+            "height": undefined,
+            "width": undefined,
+          },
+          {
+            "borderRadius": 20,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        {
+          "alignItems": "baseline",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#0F172A",
+            "fontSize": 22,
+            "fontWeight": "700",
+          }
+        }
+      >
+        Italian
+      </Text>
+      <Text
+        style={
+          {
+            "color": "#475569",
+            "fontSize": 14,
+            "fontWeight": "500",
+          }
+        }
+      >
+        28
+         places
+      </Text>
+    </View>
+  </View>
+</View>
+`;
