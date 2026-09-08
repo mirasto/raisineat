@@ -1,59 +1,58 @@
+import { theme } from '@/shared/constants';
+import React, { forwardRef } from 'react';
 import {
-  KeyboardTypeOptions,
   StyleProp,
   StyleSheet,
   Text,
   TextInput,
-  TextStyle,
   View,
+  type TextInputProps,
+  type TextStyle,
+  type ViewStyle,
 } from 'react-native';
-import { theme } from '@/shared/constants';
 
-export interface InputProps {
+export interface InputProps extends Omit<TextInputProps, 'style'> {
   label: string;
-  value: string;
-  placeholder: string;
-  onChangeText: (text: string) => void;
   error?: string;
-  rightIcon?: React.ReactNode;
-  secureTextEntry?: boolean;
-  keyboardType?: KeyboardTypeOptions;
-  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  statusIcon?: React.ReactNode;
   style?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
-export const Input = ({
-  label,
-  value,
-  placeholder,
-  onChangeText,
-  error,
-  rightIcon,
-  secureTextEntry = false,
-  keyboardType = 'default',
-  autoCapitalize = 'none',
-  style,
-}: InputProps) => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={[styles.inputContainer, Boolean(error) && styles.inputError]}>
-        <TextInput
-          style={[styles.input, style]}
-          value={value}
-          placeholder={placeholder}
-          onChangeText={onChangeText}
-          secureTextEntry={secureTextEntry}
-          keyboardType={keyboardType}
-          autoCapitalize={autoCapitalize}
-          placeholderTextColor={theme.colors.textMuted}
-        />
-        {Boolean(rightIcon) && <View style={styles.rightIcon}>{rightIcon}</View>}
+export const Input = forwardRef<TextInput, InputProps>(
+  (
+    {
+      label,
+      error,
+      statusIcon,
+      placeholderTextColor = theme.colors.textMuted,
+      ...restProps
+    },
+    ref
+  ) => {
+    const hasError = Boolean(error);
+
+    return (
+      <View style={[styles.container]}>
+        <Text style={styles.label}>{label}</Text>
+
+        <View style={[styles.inputContainer, hasError && styles.inputError]}>
+          <TextInput
+            ref={ref}
+            style={[styles.input]}
+            placeholderTextColor={placeholderTextColor}
+            {...restProps}
+          />
+          {Boolean(statusIcon) && <View style={styles.statusIcon}>{statusIcon}</View>}
+        </View>
+
+        {hasError ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
-      {Boolean(error) && <Text style={styles.errorText}>{error}</Text>}
-    </View>
-  );
-};
+    );
+  }
+);
+
+Input.displayName = 'Input';
 
 const styles = StyleSheet.create({
   container: {
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     paddingVertical: 0,
   },
-  rightIcon: {
+  statusIcon: {
     marginLeft: theme.spacing.sm,
     justifyContent: 'center',
     alignItems: 'center',

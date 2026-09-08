@@ -1,96 +1,65 @@
-import { useState } from 'react';
-import { useLoginMutation } from '@/api';
-import { validateLoginForm } from '@/shared/utils';
-import type { AuthFormErrors } from '../types';
+import { useForm } from 'react-hook-form';
+import type { LoginCredentials } from '../types';
 
-export const useLoginForm = () => {
-  const [login, { isLoading }] = useLoginMutation();
+interface UseLoginFormOptions {
+  onSubmit: (data: LoginCredentials) => void;
+  serverError?: string | null;
+  onClearServerError?: () => void;
+}
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [generalError, setGeneralError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<AuthFormErrors>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+export const useLoginForm = ({
+  onSubmit,
+  serverError,
+  onClearServerError,
+}: UseLoginFormOptions) => {
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitted },
+  } = useForm<LoginCredentials>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+  });
 
-  const clearErrors = (): void => {
-    setGeneralError(null);
-    setFieldErrors({});
-  };
-
-  const handleEmailChange = (text: string): void => {
-    setEmail(text);
-    if (fieldErrors.email || generalError) {
-      setFieldErrors((prev) => ({ ...prev, email: undefined }));
-      setGeneralError(null);
+  const handleClearField = (fieldName: keyof LoginCredentials) => {
+    setValue(fieldName, '', { shouldValidate: true });
+    if (serverError && onClearServerError) {
+      onClearServerError();
     }
   };
 
-  const handlePasswordChange = (text: string): void => {
-    setPassword(text);
-    if (fieldErrors.password || generalError) {
-      setFieldErrors((prev) => ({ ...prev, password: undefined }));
-      setGeneralError(null);
+
+  const createChangeHandler = (fieldOnChange: (text: string) => void) => (text: string) => {
+    fieldOnChange(text);
+    if (serverError && onClearServerError) {
+      onClearServerError();
     }
   };
 
-  const handleClearEmail = (): void => {
-    setEmail('');
-    setFieldErrors((prev) => ({ ...prev, email: undefined }));
+
+  const isFieldError = (fieldName: keyof LoginCredentials, value: string): boolean => {
+    const hasLocalError = isSubmitted && Boolean(value) && Boolean(errors[fieldName]);
+    const hasServerError = Boolean(serverError) && Boolean(value);
+    return hasLocalError || hasServerError;
   };
 
-  const handleClearPassword = (): void => {
-    setPassword('');
-    setFieldErrors((prev) => ({ ...prev, password: undefined }));
-  };
-
-  const handleSignIn = async (): Promise<void> => {
-    setIsSubmitted(true);
-    const validation = validateLoginForm({ email, password });
-
-    if (!validation.isValid) {
-      setFieldErrors(validation.errors);
-      return;
-    }
-
-    clearErrors();
-
-    try {
-      const result = await login({ email, password });
-
-      if ('error' in result) {
-        const errorObj = result.error;
-        if (
-          errorObj &&
-          typeof errorObj === 'object' &&
-          'data' in errorObj &&
-          errorObj.data &&
-          typeof errorObj.data === 'object' &&
-          'error' in errorObj.data &&
-          typeof (errorObj.data as { error: unknown }).error === 'string'
-        ) {
-          setGeneralError((errorObj.data as { error: string }).error);
-        } else {
-          setGeneralError('Invalid email or password');
-        }
-      }
-    } catch {
-      setGeneralError('An unexpected error occurred. Please try again.');
-    }
+  const isFieldSuccess = (fieldName: keyof LoginCredentials, value: string): boolean => {
+    return isSubmitted && Boolean(value) && !errors[fieldName] && !serverError;
   };
 
   return {
-    email,
-    password,
-    isLoading,
-    generalError,
-    fieldErrors,
+    control,
+    errors,
     isSubmitted,
-    showEmailError: isSubmitted && Boolean(fieldErrors.email),
-    showPasswordError: isSubmitted && Boolean(fieldErrors.password),
-    handleEmailChange,
-    handlePasswordChange,
-    handleClearEmail,
-    handleClearPassword,
-    handleSignIn,
+    handleClearField,
+    createChangeHandler,
+    isFieldError,
+    isFieldSuccess,
+    onSubmitForm: handleSubmit(onSubmit),
   };
 };

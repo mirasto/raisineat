@@ -12,7 +12,12 @@ export const restaurantItemSchema = z.object({
   speciality: z.string().optional(),
   imageUrl: z.string(),
 });
-
+export const apiErrorSchema = z.object({
+  data: z.object({
+    error: z.string().optional(),
+    message: z.string().optional(),
+  }),
+});
 export const cuisineGroupSchema = z.object({
   open: z.array(restaurantItemSchema),
   close: z.array(restaurantItemSchema),

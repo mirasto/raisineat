@@ -1,18 +1,40 @@
+import { useLoginMutation } from '@/api';
+import type { LoginCredentials } from '@/features/auth/types';
+import { theme } from '@/shared/constants';
+import React, { useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
-  Platform,
+  Pressable,
   ScrollView,
   StatusBar,
   StyleSheet,
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { theme } from '@/shared/constants';
 import { LoginForm } from '../components/LoginForm';
-import { useLoginForm } from '../hooks/useLoginForm';
+import { apiErrorSchema } from '@/api/schemas';
 
 export const LoginScreen = () => {
-  const formState = useLoginForm();
+  const [login, { isLoading }] = useLoginMutation();
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const handleLogin = async (credentials: LoginCredentials) => {
+    setServerError(null);
+
+    try {
+      await login(credentials).unwrap();
+    } catch (error: unknown) {
+      const result = apiErrorSchema.safeParse(error);
+
+      if (result.success) {
+        const message = result.data.data.error || result.data.data.message;
+        setServerError(message || 'Invalid email or password');
+      } else {
+        setServerError('Invalid email or password');
+      }
+    }
+  };
 
   return (
     <LinearGradient
@@ -22,30 +44,23 @@ export const LoginScreen = () => {
       style={styles.rootContainer}
     >
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      <View style={styles.topSpacer} />
+      <Pressable style={styles.topSpacer} onPress={Keyboard.dismiss} accessible={false} />
 
       <View style={styles.formSheet}>
         <KeyboardAvoidingView
           style={styles.keyboardAvoid}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
           <ScrollView
             contentContainerStyle={styles.scrollContent}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
+            bounces={false}
           >
             <LoginForm
-              email={formState.email}
-              password={formState.password}
-              isLoading={formState.isLoading}
-              generalError={formState.generalError}
-              fieldErrors={formState.fieldErrors}
-              isSubmitted={formState.isSubmitted}
-              onChangeEmail={formState.handleEmailChange}
-              onChangePassword={formState.handlePasswordChange}
-              onClearEmail={formState.handleClearEmail}
-              onClearPassword={formState.handleClearPassword}
-              onSubmit={formState.handleSignIn}
+              onSubmit={handleLogin}
+              isLoading={isLoading}
+              serverError={serverError}
+              onClearServerError={() => setServerError(null)}
             />
           </ScrollView>
         </KeyboardAvoidingView>
@@ -81,5 +96,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     paddingTop: 36,
     paddingBottom: 48,
+    flexGrow: 1,
   },
 });

@@ -1,12 +1,4 @@
-import {
-  ActivityIndicator,
-  Animated,
-  Image,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Animated, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { splashLogo } from '@/assets/icons';
 import { theme } from '@/shared/constants';
@@ -38,13 +30,7 @@ export const SplashScreen = () => {
         </View>
 
         <Text style={styles.appName}>RaisinEat</Text>
-        <Text style={styles.tagline}>Discover Delicious Cuisines</Text>
       </Animated.View>
-
-      <View style={styles.footerContainer}>
-        <ActivityIndicator size="small" color={theme.colors.white} />
-        <Text style={styles.versionText}>v1.0.0</Text>
-      </View>
     </LinearGradient>
   );
 };

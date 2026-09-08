@@ -1,5 +1,5 @@
-import errorIcon from './error.png';
-import checkIcon from './check.png';
-import splashLogo from './splash_logo.png';
+import errorIcon from './ERROR.png';
+import checkIcon from './CHECK.png';
+import splashLogo from './SPLASH_LOGO.png';
 
 export { errorIcon, checkIcon, splashLogo };

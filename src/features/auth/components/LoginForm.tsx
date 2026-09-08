@@ -1,104 +1,117 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Controller } from 'react-hook-form';
 import { checkIcon, errorIcon } from '@/assets/icons';
 import { Button, Input } from '@/shared/ui';
 import { theme } from '@/shared/constants';
-import type { AuthFormErrors } from '../types';
+import type { LoginCredentials } from '../types';
+import { useLoginForm } from '../hooks/useLoginForm';
 
-export interface LoginFormProps {
-  email: string;
-  password: string;
+interface LoginFormProps {
+  onSubmit: (data: LoginCredentials) => void;
   isLoading: boolean;
-  generalError: string | null;
-  fieldErrors: AuthFormErrors;
-  isSubmitted: boolean;
-  onChangeEmail: (text: string) => void;
-  onChangePassword: (text: string) => void;
-  onClearEmail: () => void;
-  onClearPassword: () => void;
-  onSubmit: () => void;
+  serverError?: string | null;
+  onClearServerError?: () => void;
 }
 
 export const LoginForm = ({
-  email,
-  password,
-  isLoading,
-  generalError,
-  fieldErrors,
-  isSubmitted,
-  onChangeEmail,
-  onChangePassword,
-  onClearEmail,
-  onClearPassword,
   onSubmit,
+  isLoading,
+  serverError,
+  onClearServerError,
 }: LoginFormProps) => {
-  const isEmailError = isSubmitted && Boolean(fieldErrors.email);
-  const isEmailSuccess = isSubmitted && !fieldErrors.email && email.trim().length > 0;
-  const isPasswordError = isSubmitted && Boolean(fieldErrors.password);
-  const isPasswordSuccess = isSubmitted && !fieldErrors.password && password.length > 0;
+  const {
+    control,
+    errors,
+    handleClearField,
+    createChangeHandler,
+    isFieldError,
+    isFieldSuccess,
+    onSubmitForm,
+  } = useLoginForm({
+    onSubmit,
+    serverError,
+    onClearServerError,
+  });
 
-  const renderEmailAccessory = () => {
-    if (isEmailError) {
+  const renderStatusIcon = (fieldName: keyof LoginCredentials, value: string) => {
+    if (isFieldError(fieldName, value)) {
       return (
-        <Pressable onPress={onClearEmail} hitSlop={8}>
+        <Pressable onPress={() => handleClearField(fieldName)} hitSlop={8}>
           <Image source={errorIcon} style={styles.statusIcon} />
         </Pressable>
       );
     }
-    if (isEmailSuccess) {
-      return <Image source={checkIcon} style={styles.statusIcon} />;
-    }
-    return undefined;
-  };
 
-  const renderPasswordAccessory = () => {
-    if (isPasswordError) {
-      return (
-        <Pressable onPress={onClearPassword} hitSlop={8}>
-          <Image source={errorIcon} style={styles.statusIcon} />
-        </Pressable>
-      );
-    }
-    if (isPasswordSuccess) {
+    if (isFieldSuccess(fieldName, value)) {
       return <Image source={checkIcon} style={styles.statusIcon} />;
     }
-    return undefined;
+
+    return null;
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>Welcome Back</Text>
       <Text style={styles.subtitle}>Hello there, sign in to continue!</Text>
 
-      {Boolean(generalError) && (
+      {serverError ? (
         <View style={styles.generalErrorBanner}>
-          <Text style={styles.generalErrorText}>{generalError}</Text>
+          <Text style={styles.generalErrorText}>{serverError}</Text>
         </View>
-      )}
+      ) : null}
 
-      <Input
-        label="Username or email"
-        placeholder="Enter username or email"
-        value={email}
-        onChangeText={onChangeEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        error={fieldErrors.email}
-        rightIcon={renderEmailAccessory()}
+      <Controller
+        control={control}
+        name="email"
+        rules={{
+          required: 'Email is required',
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: 'Invalid email address',
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Input
+            label="Username or email"
+            placeholder="Enter username or email"
+            value={value}
+            onChangeText={createChangeHandler(onChange)}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onBlur={onBlur}
+            error={errors.email?.message}
+            statusIcon={renderStatusIcon('email', value)}
+          />
+        )}
       />
 
-      <Input
-        label="Password"
-        placeholder="Enter password"
-        value={password}
-        onChangeText={onChangePassword}
-        secureTextEntry
-        error={fieldErrors.password}
-        rightIcon={renderPasswordAccessory()}
+      <Controller
+        control={control}
+        name="password"
+        rules={{
+          required: 'Password is required',
+          minLength: {
+            value: 6,
+            message: 'Password must be at least 6 characters',
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Input
+            label="Password"
+            placeholder="Enter password"
+            value={value}
+            onChangeText={createChangeHandler(onChange)}
+            onBlur={onBlur}
+            secureTextEntry
+            error={errors.password?.message}
+            statusIcon={renderStatusIcon('password', value)}
+          />
+        )}
       />
 
       <Button
         title="Sign in"
-        onPress={onSubmit}
+        onPress={onSubmitForm}
         loading={isLoading}
         style={styles.signInButton}
         textStyle={styles.signInButtonText}
@@ -108,6 +121,9 @@ export const LoginForm = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
   title: {
     fontSize: 28,
     fontWeight: '800',
