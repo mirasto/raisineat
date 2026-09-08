@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
+import { FlatList, StatusBar, View } from 'react-native';
 import { CuisineCard } from '../components/CuisineCard';
-import { EmptyState, ErrorState, Loader } from '@/shared/ui';
+import { ScreenState } from '@/shared/ui';
 import { theme } from '@/shared/constants';
 import { useCuisineList } from '../hooks/useCuisineList';
 import type { CuisineItem } from '../types';
+import { styles } from './CuisineListScreen.styles';
 
 export const CuisineListScreen = () => {
   const {
@@ -32,14 +33,6 @@ export const CuisineListScreen = () => {
 
   const keyExtractor = useCallback((item: CuisineItem) => item.name, []);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
-    return <ErrorState message="Failed to load cuisines" onRetry={refetch} />;
-  }
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.card} />
@@ -55,18 +48,16 @@ export const CuisineListScreen = () => {
         maxToRenderPerBatch={6}
         windowSize={5}
         removeClippedSubviews
-        ListEmptyComponent={<EmptyState message="No cuisines found" />}
+        ListEmptyComponent={
+          <ScreenState
+            isLoading={isLoading}
+            error={isError ? 'Failed to load cuisines' : null}
+            isEmpty={!isLoading && !isError && cuisines.length === 0}
+            emptyMessage="No cuisines found"
+            onRetry={refetch}
+          />
+        }
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  listContent: {
-    padding: theme.spacing.md,
-  },
-});

@@ -10,4 +10,4 @@ export {
   selectCurrentUserId,
 } from './authSlice';
 export type { AuthState } from './authSlice';
-export type { LoginCredentials, LoginResponse, AuthFormErrors, ValidationResult } from './types';
+export type { LoginCredentials, LoginResponse } from './types';

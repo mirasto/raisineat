@@ -2,22 +2,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useGetCuisinesQuery } from '@/api';
 import { useAppSelector } from '@/store';
 import { selectRestaurantById } from '../selectors';
+import { formatRatingFeedback } from '@/shared/utils';
 import type { RestaurantDetailNavigationProp, RestaurantDetailRouteProp } from '@/navigation';
-
-const RATING_THRESHOLD = {
-  VERY_GOOD: 8.5,
-  GOOD: 7.5,
-} as const;
-
-const getRatingFeedback = (rating: number): string => {
-  if (rating >= RATING_THRESHOLD.VERY_GOOD) {
-    return 'Very good';
-  }
-  if (rating >= RATING_THRESHOLD.GOOD) {
-    return 'Good';
-  }
-  return 'Satisfactory';
-};
 
 export const useRestaurantDetail = () => {
   const navigation = useNavigation<RestaurantDetailNavigationProp>();
@@ -33,7 +19,7 @@ export const useRestaurantDetail = () => {
     navigation.goBack();
   };
 
-  const ratingFeedback = restaurant ? getRatingFeedback(restaurant.rating) : '';
+  const ratingFeedback = restaurant ? formatRatingFeedback(restaurant.rating) : '';
 
   return {
     restaurant,

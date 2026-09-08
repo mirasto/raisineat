@@ -1,10 +1,10 @@
-import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { ScrollView, StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ErrorState, Loader } from '@/shared/ui';
-import { theme } from '@/shared/constants';
+import { ScreenState } from '@/shared/ui';
 import { RestaurantHero } from '../components/RestaurantHero';
 import { RestaurantMeta } from '../components/RestaurantMeta';
 import { useRestaurantDetail } from '../hooks/useRestaurantDetail';
+import { styles } from './RestaurantDetailScreen.styles';
 
 const PADDING_BOTTOM_OFFSET = 24;
 
@@ -13,13 +13,13 @@ export const RestaurantDetailScreen = () => {
   const { restaurant, isLoading, ratingFeedback, handleBack } = useRestaurantDetail();
 
   if (isLoading) {
-    return <Loader />;
+    return <ScreenState isLoading />;
   }
 
   if (!restaurant) {
     return (
-      <ErrorState
-        message="Restaurant not found"
+      <ScreenState
+        error="Restaurant not found"
         onRetry={handleBack}
         retryTitle="Go Back"
       />
@@ -54,10 +54,3 @@ export const RestaurantDetailScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.card,
-  },
-});

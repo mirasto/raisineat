@@ -26,14 +26,12 @@ export const adaptCuisinesApiResponse = (
     const cuisineRestaurants: Restaurant[] = [
       ...open.map((restaurant) => ({
         ...restaurant,
-        isOpen: true,
-        isClosed: false,
+        isAvailable: true,
         cuisine: name,
       })),
       ...close.map((restaurant) => ({
         ...restaurant,
-        isOpen: false,
-        isClosed: true,
+        isAvailable: false,
         cuisine: name,
       })),
     ];

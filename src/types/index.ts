@@ -1,8 +1,6 @@
 export type {
   LoginCredentials,
   LoginResponse,
-  AuthFormErrors,
-  ValidationResult,
 } from '@/features/auth/types';
 export type {
   Restaurant,

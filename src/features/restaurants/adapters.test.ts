@@ -59,12 +59,10 @@ describe('adaptCuisinesApiResponse Adapter', () => {
     expect(italianIds).toEqual(['it-1', 'it-2']);
 
     const openRestaurant = result.restaurants.entities['it-1'];
-    expect(openRestaurant?.isOpen).toBe(true);
-    expect(openRestaurant?.isClosed).toBe(false);
+    expect(openRestaurant?.isAvailable).toBe(true);
 
     const closedRestaurant = result.restaurants.entities['it-2'];
-    expect(closedRestaurant?.isOpen).toBe(false);
-    expect(closedRestaurant?.isClosed).toBe(true);
+    expect(closedRestaurant?.isAvailable).toBe(false);
   });
 
   it('indexes all restaurants into entity state for O(1) direct lookup', () => {

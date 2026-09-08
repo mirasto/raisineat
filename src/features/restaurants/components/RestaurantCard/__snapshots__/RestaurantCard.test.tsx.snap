@@ -218,9 +218,7 @@ exports[`RestaurantCard Component renders snapshot for closed restaurant with ov
         }
       >
         🚲 
-        2.90
-         
-        EUR
+        €2.90
       </Text>
       <Text
         style={
@@ -430,9 +428,7 @@ exports[`RestaurantCard Component renders snapshot for open restaurant correctly
         }
       >
         🚲 
-        2.90
-         
-        EUR
+        €2.90
       </Text>
       <Text
         style={

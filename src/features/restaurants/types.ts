@@ -6,8 +6,7 @@ import type { restaurantItemSchema } from '@/api/schemas';
 export type RestaurantApiItem = z.infer<typeof restaurantItemSchema>;
 
 export interface Restaurant extends RestaurantApiItem {
-  isOpen: boolean;
-  isClosed: boolean;
+  isAvailable: boolean;
   cuisine: string;
 }
 

@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
+import { FlatList, StatusBar, View } from 'react-native';
 import { RestaurantCard } from '../components/RestaurantCard';
-import { EmptyState, ErrorState, Loader } from '@/shared/ui';
+import { ScreenState } from '@/shared/ui';
 import { theme } from '@/shared/constants';
 import { useRestaurantList } from '../hooks/useRestaurantList';
 import type { Restaurant } from '../types';
+import { styles } from './RestaurantListScreen.styles';
 
 export const RestaurantListScreen = () => {
   const {
@@ -25,14 +26,6 @@ export const RestaurantListScreen = () => {
 
   const keyExtractor = useCallback((item: Restaurant) => item.id, []);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
-    return <ErrorState message="Failed to load restaurants" onRetry={refetch} />;
-  }
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.card} />
@@ -48,18 +41,16 @@ export const RestaurantListScreen = () => {
         maxToRenderPerBatch={8}
         windowSize={5}
         removeClippedSubviews
-        ListEmptyComponent={<EmptyState message="No restaurants found" />}
+        ListEmptyComponent={
+          <ScreenState
+            isLoading={isLoading}
+            error={isError ? 'Failed to load restaurants' : null}
+            isEmpty={!isLoading && !isError && restaurants.length === 0}
+            emptyMessage="No restaurants found"
+            onRetry={refetch}
+          />
+        }
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  listContent: {
-    padding: theme.spacing.md,
-  },
-});

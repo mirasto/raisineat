@@ -17,8 +17,7 @@ describe('Reselect memoized selectors', () => {
     minOrder: 15,
     deliveryTime: '20-30 min',
     imageUrl: 'https://example.com/pizza.jpg',
-    isOpen: true,
-    isClosed: false,
+    isAvailable: true,
     cuisine: 'italian',
   };
 

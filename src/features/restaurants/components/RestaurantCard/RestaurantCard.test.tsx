@@ -14,8 +14,7 @@ describe('RestaurantCard Component', () => {
     minOrder: 10,
     deliveryTime: '30-40 min',
     imageUrl: 'https://example.com/pizza.jpg',
-    isOpen: true,
-    isClosed: false,
+    isAvailable: true,
     cuisine: 'italian',
   };
 
@@ -23,8 +22,7 @@ describe('RestaurantCard Component', () => {
     ...mockOpenRestaurant,
     id: 'r2',
     restaurantName: 'Closed Trattoria',
-    isOpen: false,
-    isClosed: true,
+    isAvailable: false,
   };
 
   it('renders snapshot for open restaurant correctly', () => {
