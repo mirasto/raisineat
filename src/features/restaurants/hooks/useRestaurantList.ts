@@ -12,7 +12,9 @@ export const useRestaurantList = () => {
   const cuisine = route.params?.cuisine ?? '';
 
   const { isLoading, isFetching, isError, refetch } = useGetCuisinesQuery();
-  const restaurants = useAppSelector(selectRestaurantsByCuisine(cuisine));
+  const restaurants = useAppSelector((state) =>
+    selectRestaurantsByCuisine(state, cuisine)
+  );
 
   const handleSelectRestaurant = useCallback(
     (item: Restaurant): void => {

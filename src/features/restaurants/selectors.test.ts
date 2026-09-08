@@ -22,20 +22,28 @@ describe('Reselect memoized selectors', () => {
     cuisine: 'italian',
   };
 
+  const mockCuisine = {
+    name: 'italian',
+    title: 'Italian',
+    image: { uri: 'italian.jpg' },
+    placesCount: 1,
+  };
+
   const mockCuisinesData: CuisinesData = {
-    cuisines: [
-      {
-        name: 'italian',
-        title: 'Italian',
-        image: { uri: 'italian.jpg' },
-        placesCount: 1,
+    cuisines: {
+      ids: ['italian'],
+      entities: {
+        italian: mockCuisine,
       },
-    ],
-    restaurantsByCuisine: {
-      italian: [mockRestaurant],
     },
-    restaurantsById: {
-      r1: mockRestaurant,
+    restaurants: {
+      ids: ['r1'],
+      entities: {
+        r1: mockRestaurant,
+      },
+    },
+    restaurantIdsByCuisine: {
+      italian: ['r1'],
     },
   };
 
@@ -58,37 +66,37 @@ describe('Reselect memoized selectors', () => {
 
   it('selectCuisineList returns cuisine list when data is available', () => {
     const list = selectCuisineList(mockState as unknown as RootState);
-    expect(list).toEqual(mockCuisinesData.cuisines);
+    expect(list).toEqual([mockCuisine]);
     expect(list).toHaveLength(1);
     expect(list[0]?.name).toBe('italian');
   });
 
-  it('selectCuisineList returns empty array when query has not loaded', () => {
-    const list = selectCuisineList(emptyState as unknown as RootState);
-    expect(list).toEqual([]);
+  it('selectCuisineList returns stable empty array when query has not loaded', () => {
+    const list1 = selectCuisineList(emptyState as unknown as RootState);
+    const list2 = selectCuisineList(emptyState as unknown as RootState);
+    expect(list1).toEqual([]);
+    expect(list1).toBe(list2);
   });
 
   it('selectRestaurantsByCuisine returns restaurants for given cuisine', () => {
-    const selector = selectRestaurantsByCuisine('Italian');
-    const result = selector(mockState as unknown as RootState);
+    const result = selectRestaurantsByCuisine(mockState as unknown as RootState, 'Italian');
     expect(result).toEqual([mockRestaurant]);
   });
 
-  it('selectRestaurantsByCuisine returns empty array for unknown cuisine', () => {
-    const selector = selectRestaurantsByCuisine('mexican');
-    const result = selector(mockState as unknown as RootState);
-    expect(result).toEqual([]);
+  it('selectRestaurantsByCuisine returns stable empty array for unknown cuisine', () => {
+    const result1 = selectRestaurantsByCuisine(mockState as unknown as RootState, 'mexican');
+    const result2 = selectRestaurantsByCuisine(mockState as unknown as RootState, 'french');
+    expect(result1).toEqual([]);
+    expect(result1).toBe(result2);
   });
 
   it('selectRestaurantById returns specific restaurant when found', () => {
-    const selector = selectRestaurantById('r1');
-    const result = selector(mockState as unknown as RootState);
+    const result = selectRestaurantById(mockState as unknown as RootState, 'r1');
     expect(result).toEqual(mockRestaurant);
   });
 
   it('selectRestaurantById returns undefined when not found', () => {
-    const selector = selectRestaurantById('non-existent');
-    const result = selector(mockState as unknown as RootState);
+    const result = selectRestaurantById(mockState as unknown as RootState, 'non-existent');
     expect(result).toBeUndefined();
   });
 });

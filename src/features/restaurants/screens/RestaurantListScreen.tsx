@@ -44,6 +44,10 @@ export const RestaurantListScreen = () => {
         showsVerticalScrollIndicator={false}
         refreshing={isFetching}
         onRefresh={refetch}
+        initialNumToRender={6}
+        maxToRenderPerBatch={8}
+        windowSize={5}
+        removeClippedSubviews
         ListEmptyComponent={<EmptyState message="No restaurants found" />}
       />
     </View>

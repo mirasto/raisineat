@@ -1,0 +1,217 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginForm Component renders initial form correctly with inputs and submit button 1`] = `
+<View
+  style={
+    {
+      "width": "100%",
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#0F172A",
+        "fontSize": 28,
+        "fontWeight": "800",
+        "letterSpacing": -0.5,
+      }
+    }
+  >
+    Welcome Back
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#64748B",
+        "fontSize": 15,
+        "marginBottom": 28,
+        "marginTop": 6,
+      }
+    }
+  >
+    Hello there, sign in to continue!
+  </Text>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#94A3B8",
+          "fontSize": 14,
+          "fontWeight": "400",
+          "marginBottom": 8,
+        }
+      }
+    >
+      Username or email
+    </Text>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "backgroundColor": "#F3F4F6",
+            "borderRadius": 14,
+            "flexDirection": "row",
+            "height": 54,
+            "paddingHorizontal": 16,
+          },
+          false,
+        ]
+      }
+    >
+      <TextInput
+        autoCapitalize="none"
+        keyboardType="email-address"
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        placeholder="Enter username or email"
+        placeholderTextColor="#94A3B8"
+        style={
+          [
+            {
+              "color": "#0F172A",
+              "flex": 1,
+              "fontSize": 16,
+              "paddingVertical": 0,
+            },
+          ]
+        }
+        value=""
+      />
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#94A3B8",
+          "fontSize": 14,
+          "fontWeight": "400",
+          "marginBottom": 8,
+        }
+      }
+    >
+      Password
+    </Text>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "backgroundColor": "#F3F4F6",
+            "borderRadius": 14,
+            "flexDirection": "row",
+            "height": 54,
+            "paddingHorizontal": 16,
+          },
+          false,
+        ]
+      }
+    >
+      <TextInput
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        placeholder="Enter password"
+        placeholderTextColor="#94A3B8"
+        secureTextEntry={true}
+        style={
+          [
+            {
+              "color": "#0F172A",
+              "flex": 1,
+              "fontSize": 16,
+              "paddingVertical": 0,
+            },
+          ]
+        }
+        value=""
+      />
+    </View>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#818CF8",
+          "borderRadius": 14,
+          "height": 56,
+          "justifyContent": "center",
+        },
+        false,
+        false,
+        {
+          "borderRadius": 14,
+          "height": 52,
+          "marginTop": 16,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+            "fontWeight": "600",
+          },
+          {
+            "fontSize": 16,
+            "fontWeight": "700",
+            "letterSpacing": 0.2,
+          },
+        ]
+      }
+    >
+      Sign in
+    </Text>
+  </View>
+</View>
+`;

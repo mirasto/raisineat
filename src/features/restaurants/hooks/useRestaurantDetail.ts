@@ -25,7 +25,9 @@ export const useRestaurantDetail = () => {
   const { restaurantId } = route.params;
 
   const { isLoading } = useGetCuisinesQuery();
-  const restaurant = useAppSelector(selectRestaurantById(restaurantId));
+  const restaurant = useAppSelector((state) =>
+    selectRestaurantById(state, restaurantId)
+  );
 
   const handleBack = (): void => {
     navigation.goBack();

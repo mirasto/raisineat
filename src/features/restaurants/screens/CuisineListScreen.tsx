@@ -51,6 +51,10 @@ export const CuisineListScreen = () => {
         showsVerticalScrollIndicator={false}
         refreshing={isFetching}
         onRefresh={refetch}
+        initialNumToRender={4}
+        maxToRenderPerBatch={6}
+        windowSize={5}
+        removeClippedSubviews
         ListEmptyComponent={<EmptyState message="No cuisines found" />}
       />
     </View>

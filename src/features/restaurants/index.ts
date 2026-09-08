@@ -8,7 +8,11 @@ export { RestaurantMeta } from './components/RestaurantMeta';
 export { useCuisineList } from './hooks/useCuisineList';
 export { useRestaurantList } from './hooks/useRestaurantList';
 export { useRestaurantDetail } from './hooks/useRestaurantDetail';
-export { adaptCuisinesApiResponse } from './adapters';
+export {
+  adaptCuisinesApiResponse,
+  restaurantsAdapter,
+  cuisinesAdapter,
+} from './adapters';
 export {
   selectCuisinesResult,
   selectCuisinesData,

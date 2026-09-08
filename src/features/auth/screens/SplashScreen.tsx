@@ -30,7 +30,12 @@ export const SplashScreen = () => {
         </View>
 
         <Text style={styles.appName}>RaisinEat</Text>
+        <Text style={styles.tagline}>Discover delicious food</Text>
       </Animated.View>
+
+      <View style={styles.footerContainer}>
+        <Text style={styles.versionText}>v1.0.0</Text>
+      </View>
     </LinearGradient>
   );
 };

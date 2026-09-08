@@ -1,4 +1,5 @@
 import type { ImageSourcePropType } from 'react-native';
+import type { EntityState } from '@reduxjs/toolkit';
 import type { z } from 'zod';
 import type { restaurantItemSchema } from '@/api/schemas';
 
@@ -18,7 +19,7 @@ export interface CuisineItem {
 }
 
 export interface CuisinesData {
-  cuisines: CuisineItem[];
-  restaurantsByCuisine: Record<string, Restaurant[]>;
-  restaurantsById: Record<string, Restaurant>;
+  cuisines: EntityState<CuisineItem, string>;
+  restaurants: EntityState<Restaurant, string>;
+  restaurantIdsByCuisine: Record<string, string[]>;
 }
