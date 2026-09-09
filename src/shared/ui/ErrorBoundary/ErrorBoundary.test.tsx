@@ -5,7 +5,11 @@ import { Button } from '../Button';
 
 const GoodChild = () => <Text>All good</Text>;
 
-const ProblemChild = ({ shouldThrow }: { shouldThrow: boolean }) => {
+interface ProblemChildProps {
+  shouldThrow: boolean;
+}
+
+const ProblemChild = ({ shouldThrow }: ProblemChildProps) => {
   if (shouldThrow) {
     throw new Error('Test crash');
   }

@@ -96,7 +96,7 @@ exports[`CuisineCard Component renders snapshot correctly 1`] = `
       <Text
         style={
           {
-            "color": "#0F172A",
+            "color": "#fff",
             "fontSize": 22,
             "fontWeight": "700",
           }
@@ -107,7 +107,7 @@ exports[`CuisineCard Component renders snapshot correctly 1`] = `
       <Text
         style={
           {
-            "color": "#475569",
+            "color": "#fff",
             "fontSize": 14,
             "fontWeight": "500",
           }

@@ -9,7 +9,7 @@ import {
 import { formatPlaceCount } from '@/shared/utils';
 import { styles } from './CuisineCard.styles';
 
-export interface CuisineCardProps {
+interface CuisineCardProps {
   title: string;
   placesCount: number;
   image: ImageSourcePropType;

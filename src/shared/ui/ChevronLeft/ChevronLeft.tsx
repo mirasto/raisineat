@@ -1,7 +1,7 @@
-import { StyleSheet, View } from 'react-native';
 import { theme } from '@/shared/constants';
+import { StyleSheet, View } from 'react-native';
 
-export interface ChevronLeftProps {
+interface ChevronLeftProps {
   color?: string;
 }
 
@@ -16,5 +16,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: 2.5,
     borderBottomWidth: 2.5,
     transform: [{ rotate: '45deg' }],
+    marginLeft: 2,
   },
 });

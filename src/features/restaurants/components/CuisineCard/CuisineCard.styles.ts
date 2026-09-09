@@ -34,11 +34,11 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '700',
-    color: theme.colors.textPrimary,
+    color: '#fff',
   },
   placesCount: {
     fontSize: 14,
-    color: '#475569',
+    color: '#fff',
     fontWeight: '500',
   },
 });

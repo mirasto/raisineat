@@ -5,7 +5,7 @@ import { formatCurrency, formatRating } from '@/shared/utils';
 import type { Restaurant } from '../../types';
 import { styles } from './RestaurantCard.styles';
 
-export interface RestaurantCardProps {
+interface RestaurantCardProps {
   item: Restaurant;
   onPress: (restaurant: Restaurant) => void;
 }

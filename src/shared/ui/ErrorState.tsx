@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from './Button';
 import { theme } from '@/shared/constants';
 
-interface ErrorStateProps {
+export interface ErrorStateProps {
   message: string;
   onRetry?: () => void;
   retryTitle?: string;

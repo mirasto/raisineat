@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { theme } from '@/shared/constants';
 
-export interface ButtonProps {
+interface ButtonProps {
   title: string;
   onPress?: () => void;
   loading?: boolean;
