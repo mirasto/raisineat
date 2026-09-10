@@ -1,5 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { ErrorState } from '../ErrorState';
+import { ScreenState } from '../ScreenState';
 
 export interface ErrorBoundaryProps {
   children: ReactNode;
@@ -9,7 +9,6 @@ export interface ErrorBoundaryProps {
 
 interface ErrorBoundaryState {
   hasError: boolean;
-  error: Error | null;
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -17,14 +16,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     super(props);
     this.state = {
       hasError: false,
-      error: null,
     };
   }
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(): ErrorBoundaryState {
     return {
       hasError: true,
-      error,
     };
   }
 
@@ -35,7 +32,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   handleReset = (): void => {
-    this.setState({ hasError: false, error: null });
+    this.setState({ hasError: false });
     this.props.onReset?.();
   };
 
@@ -46,8 +43,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
 
       return (
-        <ErrorState
-          message="Something went wrong. Please try again."
+        <ScreenState
+          error="Something went wrong. Please try again."
           onRetry={this.handleReset}
           retryTitle="Reload Screen"
         />

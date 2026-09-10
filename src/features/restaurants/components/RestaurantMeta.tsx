@@ -7,16 +7,10 @@ interface RestaurantMetaProps {
   name: string;
   shortDesc: string;
   rating: number;
-  ratingFeedback?: string;
   speciality?: string;
 }
 
-export const RestaurantMeta = ({
-  name,
-  shortDesc,
-  rating,
-  speciality,
-}: RestaurantMetaProps) => {
+export const RestaurantMeta = ({ name, shortDesc, rating, speciality }: RestaurantMetaProps) => {
   return (
     <View style={styles.bodyContent}>
       <Text style={styles.restaurantName}>{name}</Text>

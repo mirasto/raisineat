@@ -1,5 +1,5 @@
 import { theme } from '@/shared/constants';
-import React, { forwardRef } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -14,7 +14,7 @@ import {
 export interface InputProps extends Omit<TextInputProps, 'style'> {
   label: string;
   error?: string;
-  statusIcon?: React.ReactNode;
+  statusIcon?: ReactNode;
   style?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -25,6 +25,8 @@ export const Input = forwardRef<TextInput, InputProps>(
       label,
       error,
       statusIcon,
+      style,
+      containerStyle,
       placeholderTextColor = theme.colors.textMuted,
       ...restProps
     },
@@ -33,13 +35,13 @@ export const Input = forwardRef<TextInput, InputProps>(
     const hasError = Boolean(error);
 
     return (
-      <View style={[styles.container]}>
+      <View style={containerStyle ? [styles.container, containerStyle] : [styles.container]}>
         <Text style={styles.label}>{label}</Text>
 
         <View style={[styles.inputContainer, hasError && styles.inputError]}>
           <TextInput
             ref={ref}
-            style={[styles.input]}
+            style={style ? [styles.input, style] : [styles.input]}
             placeholderTextColor={placeholderTextColor}
             {...restProps}
           />

@@ -1,5 +1,4 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
-import type { ImageSourcePropType } from 'react-native';
 import { CUISINE_IMAGES } from '@/assets/images';
 import type { z } from 'zod';
 import type { cuisinesApiResponseSchema } from '@/api/schemas';
@@ -15,49 +14,41 @@ export const cuisinesAdapter = createEntityAdapter<CuisineItem, string>({
   selectId: (cuisine) => cuisine.name,
 });
 
-export const adaptCuisinesApiResponse = (
-  rawResponse: RawCuisinesApiResponse
-): CuisinesData => {
+export const adaptCuisinesApiResponse = (rawResponse: RawCuisinesApiResponse): CuisinesData => {
   const cuisinesList: CuisineItem[] = [];
   const restaurantsList: Restaurant[] = [];
   const restaurantIdsByCuisine: Record<string, string[]> = {};
 
   for (const [name, { open, close }] of Object.entries(rawResponse)) {
+    const cuisineKey = name.toLowerCase();
+    if (!(cuisineKey in CUISINE_IMAGES)) {
+      continue;
+    }
+
     const cuisineRestaurants: Restaurant[] = [
       ...open.map((restaurant) => ({
         ...restaurant,
         isAvailable: true,
-        cuisine: name,
       })),
       ...close.map((restaurant) => ({
         ...restaurant,
         isAvailable: false,
-        cuisine: name,
       })),
     ];
 
     cuisinesList.push({
       name,
-      title: name.charAt(0).toUpperCase() + name.slice(1),
-      image: CUISINE_IMAGES[name.toLowerCase()] as ImageSourcePropType,
+      image: CUISINE_IMAGES[cuisineKey as keyof typeof CUISINE_IMAGES],
       placesCount: cuisineRestaurants.length,
     });
 
-    restaurantIdsByCuisine[name.toLowerCase()] = cuisineRestaurants.map(
-      (restaurant) => restaurant.id
-    );
+    restaurantIdsByCuisine[cuisineKey] = cuisineRestaurants.map((restaurant) => restaurant.id);
     restaurantsList.push(...cuisineRestaurants);
   }
 
   return {
-    cuisines: cuisinesAdapter.setAll(
-      cuisinesAdapter.getInitialState(),
-      cuisinesList
-    ),
-    restaurants: restaurantsAdapter.setAll(
-      restaurantsAdapter.getInitialState(),
-      restaurantsList
-    ),
+    cuisines: cuisinesAdapter.setAll(cuisinesAdapter.getInitialState(), cuisinesList),
+    restaurants: restaurantsAdapter.setAll(restaurantsAdapter.getInitialState(), restaurantsList),
     restaurantIdsByCuisine,
   };
 };

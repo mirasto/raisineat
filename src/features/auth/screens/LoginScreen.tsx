@@ -1,10 +1,11 @@
 import { useLoginMutation } from '@/api';
 import type { LoginCredentials } from '@/features/auth/types';
 import { theme } from '@/shared/constants';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   StatusBar,
@@ -26,13 +27,10 @@ export const LoginScreen = () => {
       await login(credentials).unwrap();
     } catch (error: unknown) {
       const result = apiErrorSchema.safeParse(error);
-
-      if (result.success) {
-        const message = result.data.data.error || result.data.data.message;
-        setServerError(message || 'Invalid email or password');
-      } else {
-        setServerError('Invalid email or password');
-      }
+      const message = result.success
+        ? result.data.data.error ?? result.data.data.message
+        : undefined;
+      setServerError(message ?? 'Invalid email or password');
     }
   };
 
@@ -48,6 +46,7 @@ export const LoginScreen = () => {
 
       <View style={styles.formSheet}>
         <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardAvoid}
         >
           <ScrollView

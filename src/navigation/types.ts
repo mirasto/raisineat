@@ -8,13 +8,11 @@ export type AuthStackParamList = {
 
 export type RestaurantsStackParamList = {
   Cuisines: undefined;
-  Restaurants: { cuisine: string; title?: string };
-  Detail: { restaurantId: string; title?: string };
+  Restaurants: { cuisine: string };
+  Detail: { restaurantId: string };
 };
 
 export type SplashScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Splash'>;
-
-export type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
 export type CuisineListNavigationProp = NativeStackNavigationProp<
   RestaurantsStackParamList,

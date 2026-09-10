@@ -36,19 +36,17 @@ describe('adaptCuisinesApiResponse Adapter', () => {
     },
   };
 
-  it('normalizes cuisines list with capitalized titles and place counts via cuisinesAdapter', () => {
+  it('normalizes cuisines with place counts via cuisinesAdapter', () => {
     const result = adaptCuisinesApiResponse(mockRawResponse);
 
     expect(result.cuisines.ids).toEqual(['italian', 'chinese']);
 
     const italianCuisine = result.cuisines.entities.italian;
     expect(italianCuisine).toBeDefined();
-    expect(italianCuisine?.title).toBe('Italian');
     expect(italianCuisine?.placesCount).toBe(2);
 
     const chineseCuisine = result.cuisines.entities.chinese;
     expect(chineseCuisine).toBeDefined();
-    expect(chineseCuisine?.title).toBe('Chinese');
     expect(chineseCuisine?.placesCount).toBe(0);
   });
 
@@ -73,5 +71,15 @@ describe('adaptCuisinesApiResponse Adapter', () => {
     expect(result.restaurants.entities['it-2']).toBeDefined();
     expect(result.restaurants.entities['it-2']?.restaurantName).toBe('Trattoria Roma');
     expect(result.restaurants.entities['non-existent']).toBeUndefined();
+  });
+
+  it('ignores cuisines without a local image', () => {
+    const result = adaptCuisinesApiResponse({
+      ...mockRawResponse,
+      unsupported: { open: [], close: [] },
+    });
+
+    expect(result.cuisines.entities.unsupported).toBeUndefined();
+    expect(result.restaurantIdsByCuisine.unsupported).toBeUndefined();
   });
 });

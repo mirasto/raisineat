@@ -4,5 +4,5 @@ export {
   formatRatingFeedback,
   formatRatingLabel,
   formatPlaceCount,
-  CURRENCY_SYMBOLS,
+  formatCuisineName,
 } from './format';

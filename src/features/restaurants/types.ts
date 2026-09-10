@@ -7,12 +7,10 @@ export type RestaurantApiItem = z.infer<typeof restaurantItemSchema>;
 
 export interface Restaurant extends RestaurantApiItem {
   isAvailable: boolean;
-  cuisine: string;
 }
 
 export interface CuisineItem {
   name: string;
-  title: string;
   image: ImageSourcePropType;
   placesCount: number;
 }

@@ -3,12 +3,10 @@ import { api } from '@/api';
 import type { LoginResponse } from './types';
 
 export interface AuthState {
-  isAuthorized: boolean;
   userId: number | null;
 }
 
 const initialState: AuthState = {
-  isAuthorized: false,
   userId: null,
 };
 
@@ -17,7 +15,6 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.isAuthorized = false;
       state.userId = null;
     },
   },
@@ -25,7 +22,6 @@ export const authSlice = createSlice({
     builder.addMatcher(
       api.endpoints.login.matchFulfilled,
       (state, action: PayloadAction<LoginResponse>) => {
-        state.isAuthorized = true;
         state.userId = action.payload.userId;
       }
     );
@@ -34,7 +30,7 @@ export const authSlice = createSlice({
 
 export const { logout } = authSlice.actions;
 
-export const selectIsAuthorized = (state: { auth: AuthState }): boolean => state.auth.isAuthorized;
-export const selectCurrentUserId = (state: { auth: AuthState }): number | null => state.auth.userId;
+export const selectIsAuthorized = (state: { auth: AuthState }): boolean =>
+  state.auth.userId !== null;
 
 export const authReducer = authSlice.reducer;

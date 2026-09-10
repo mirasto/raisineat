@@ -1,7 +1,7 @@
 import renderer, { act } from 'react-test-renderer';
 import { Pressable } from 'react-native';
 import { RestaurantCard } from './RestaurantCard';
-import type { Restaurant } from '@/types';
+import type { Restaurant } from '../../types';
 
 describe('RestaurantCard Component', () => {
   const mockOpenRestaurant: Restaurant = {
@@ -15,7 +15,6 @@ describe('RestaurantCard Component', () => {
     deliveryTime: '30-40 min',
     imageUrl: 'https://example.com/pizza.jpg',
     isAvailable: true,
-    cuisine: 'italian',
   };
 
   const mockClosedRestaurant: Restaurant = {

@@ -9,18 +9,15 @@ import type { RestaurantListNavigationProp, RestaurantListRouteProp } from '@/na
 export const useRestaurantList = () => {
   const navigation = useNavigation<RestaurantListNavigationProp>();
   const route = useRoute<RestaurantListRouteProp>();
-  const cuisine = route.params?.cuisine ?? '';
+  const { cuisine } = route.params;
 
   const { isLoading, isFetching, isError, refetch } = useGetCuisinesQuery();
-  const restaurants = useAppSelector((state) =>
-    selectRestaurantsByCuisine(state, cuisine)
-  );
+  const restaurants = useAppSelector((state) => selectRestaurantsByCuisine(state, cuisine));
 
   const handleSelectRestaurant = useCallback(
     (item: Restaurant): void => {
       navigation.navigate('Detail', {
         restaurantId: item.id,
-        title: item.restaurantName,
       });
     },
     [navigation]

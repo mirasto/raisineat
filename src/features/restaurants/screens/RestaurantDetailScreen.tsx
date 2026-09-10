@@ -10,20 +10,18 @@ const PADDING_BOTTOM_OFFSET = 24;
 
 export const RestaurantDetailScreen = () => {
   const insets = useSafeAreaInsets();
-  const { restaurant, isLoading, ratingFeedback, handleBack } = useRestaurantDetail();
+  const { restaurant, isLoading, isError, refetch, handleBack } = useRestaurantDetail();
 
   if (isLoading) {
     return <ScreenState isLoading />;
   }
 
+  if (isError) {
+    return <ScreenState error="Failed to load restaurant" onRetry={refetch} />;
+  }
+
   if (!restaurant) {
-    return (
-      <ScreenState
-        error="Restaurant not found"
-        onRetry={handleBack}
-        retryTitle="Go Back"
-      />
-    );
+    return <ScreenState error="Restaurant not found" onRetry={handleBack} retryTitle="Go Back" />;
   }
 
   return (
@@ -37,6 +35,7 @@ export const RestaurantDetailScreen = () => {
       >
         <RestaurantHero
           imageUrl={restaurant.imageUrl}
+          currency={restaurant.currency}
           deliveryCost={restaurant.deliveryCost}
           minOrder={restaurant.minOrder}
           topInset={insets.top}
@@ -47,7 +46,6 @@ export const RestaurantDetailScreen = () => {
           name={restaurant.restaurantName}
           shortDesc={restaurant.shortDesc}
           rating={restaurant.rating}
-          ratingFeedback={ratingFeedback}
           speciality={restaurant.speciality}
         />
       </ScrollView>

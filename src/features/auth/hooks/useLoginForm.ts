@@ -26,21 +26,21 @@ export const useLoginForm = ({
     reValidateMode: 'onChange',
   });
 
-  const handleClearField = (fieldName: keyof LoginCredentials) => {
-    setValue(fieldName, '', { shouldValidate: true });
-    if (serverError && onClearServerError) {
-      onClearServerError();
+  const clearServerError = () => {
+    if (serverError) {
+      onClearServerError?.();
     }
   };
 
+  const handleClearField = (fieldName: keyof LoginCredentials) => {
+    setValue(fieldName, '', { shouldValidate: true });
+    clearServerError();
+  };
 
   const createChangeHandler = (fieldOnChange: (text: string) => void) => (text: string) => {
     fieldOnChange(text);
-    if (serverError && onClearServerError) {
-      onClearServerError();
-    }
+    clearServerError();
   };
-
 
   const isFieldError = (fieldName: keyof LoginCredentials, value: string): boolean => {
     const hasLocalError = isSubmitted && Boolean(value) && Boolean(errors[fieldName]);

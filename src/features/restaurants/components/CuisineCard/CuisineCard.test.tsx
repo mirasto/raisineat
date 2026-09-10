@@ -1,6 +1,6 @@
 import renderer, { act } from 'react-test-renderer';
 import { Pressable } from 'react-native';
-import { italianImage } from '@/assets/images';
+import { CUISINE_IMAGES } from '@/assets/images';
 import { CuisineCard } from './CuisineCard';
 
 describe('CuisineCard Component', () => {
@@ -11,7 +11,7 @@ describe('CuisineCard Component', () => {
         <CuisineCard
           title="Italian"
           placesCount={28}
-          image={italianImage}
+          image={CUISINE_IMAGES.italian}
           onPress={handlePress}
         />
       )
@@ -25,7 +25,7 @@ describe('CuisineCard Component', () => {
       <CuisineCard
         title="Italian"
         placesCount={28}
-        image={italianImage}
+        image={CUISINE_IMAGES.italian}
         onPress={handlePress}
       />
     );

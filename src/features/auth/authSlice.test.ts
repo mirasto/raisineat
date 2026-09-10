@@ -1,9 +1,8 @@
-import { authReducer, logout, selectCurrentUserId, selectIsAuthorized } from './authSlice';
+import { authReducer, logout, selectIsAuthorized } from './authSlice';
 import { api } from '@/api';
 
 describe('authSlice', () => {
   const initialState = {
-    isAuthorized: false,
     userId: null,
   };
 
@@ -25,33 +24,29 @@ describe('authSlice', () => {
     const state = authReducer(initialState, action);
 
     expect(state).toEqual({
-      isAuthorized: true,
       userId: 42,
     });
   });
 
   it('should handle logout', () => {
     const loggedInState = {
-      isAuthorized: true,
       userId: 42,
     };
     const state = authReducer(loggedInState, logout());
 
     expect(state).toEqual({
-      isAuthorized: false,
       userId: null,
     });
   });
 
-  it('should extract state correctly with selectors', () => {
+  it('should derive authorization from the current user ID', () => {
     const mockRootState = {
       auth: {
-        isAuthorized: true,
         userId: 101,
       },
     };
 
     expect(selectIsAuthorized(mockRootState)).toBe(true);
-    expect(selectCurrentUserId(mockRootState)).toBe(101);
+    expect(selectIsAuthorized({ auth: initialState })).toBe(false);
   });
 });

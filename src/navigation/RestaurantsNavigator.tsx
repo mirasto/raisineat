@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { ChevronLeft } from '@/shared/ui';
 import { theme } from '@/shared/constants';
+import { formatCuisineName } from '@/shared/utils';
 import {
   CuisineListScreen,
   RestaurantDetailScreen,
@@ -65,7 +66,7 @@ export const RestaurantsNavigator = () => {
         name="Restaurants"
         component={RestaurantListScreen}
         options={({ route }) => ({
-          headerTitle: route.params?.title ?? route.params?.cuisine,
+          headerTitle: formatCuisineName(route.params.cuisine),
           headerTitleStyle: {
             fontSize: 17,
             fontWeight: '600',

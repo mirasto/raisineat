@@ -3,29 +3,22 @@ import { FlatList, StatusBar, View } from 'react-native';
 import { CuisineCard } from '../components/CuisineCard';
 import { ScreenState } from '@/shared/ui';
 import { theme } from '@/shared/constants';
+import { formatCuisineName } from '@/shared/utils';
 import { useCuisineList } from '../hooks/useCuisineList';
 import type { CuisineItem } from '../types';
 import { styles } from './CuisineListScreen.styles';
 
 export const CuisineListScreen = () => {
-  const {
-    cuisines,
-    isLoading,
-    isFetching,
-    isError,
-    refetch,
-    handleSelectCuisine,
-  } = useCuisineList();
+  const { cuisines, isLoading, isFetching, isError, refetch, handleSelectCuisine } =
+    useCuisineList();
 
   const renderItem = useCallback(
     ({ item }: { item: CuisineItem }) => (
       <CuisineCard
-        title={item.title}
+        title={formatCuisineName(item.name)}
         placesCount={item.placesCount}
         image={item.image}
-        onPress={() =>
-          handleSelectCuisine({ name: item.name, title: item.title })
-        }
+        onPress={() => handleSelectCuisine(item.name)}
       />
     ),
     [handleSelectCuisine]

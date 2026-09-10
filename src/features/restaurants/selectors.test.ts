@@ -1,8 +1,4 @@
-import {
-  selectCuisineList,
-  selectRestaurantsByCuisine,
-  selectRestaurantById,
-} from './selectors';
+import { selectCuisineList, selectRestaurantsByCuisine, selectRestaurantById } from './selectors';
 import type { RootState } from '@/store';
 import type { CuisinesData, Restaurant } from './types';
 
@@ -18,12 +14,10 @@ describe('Reselect memoized selectors', () => {
     deliveryTime: '20-30 min',
     imageUrl: 'https://example.com/pizza.jpg',
     isAvailable: true,
-    cuisine: 'italian',
   };
 
   const mockCuisine = {
     name: 'italian',
-    title: 'Italian',
     image: { uri: 'italian.jpg' },
     placesCount: 1,
   };

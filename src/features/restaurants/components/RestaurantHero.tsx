@@ -6,6 +6,7 @@ import { styles } from './RestaurantHero.styles';
 
 interface RestaurantHeroProps {
   imageUrl: string;
+  currency: string;
   deliveryCost: number;
   minOrder: number;
   topInset: number;
@@ -14,6 +15,7 @@ interface RestaurantHeroProps {
 
 export const RestaurantHero = ({
   imageUrl,
+  currency,
   deliveryCost,
   minOrder,
   topInset,
@@ -29,10 +31,14 @@ export const RestaurantHero = ({
 
       <View style={styles.heroBadgesOverlay}>
         <View style={styles.overlayBadge}>
-          <Text style={styles.overlayBadgeText}>DELIVERY: {formatCurrency(deliveryCost)}</Text>
+          <Text style={styles.overlayBadgeText}>
+            DELIVERY: {formatCurrency(deliveryCost, currency)}
+          </Text>
         </View>
         <View style={styles.overlayBadge}>
-          <Text style={styles.overlayBadgeText}>MIN. ORDER: {formatCurrency(minOrder)}</Text>
+          <Text style={styles.overlayBadgeText}>
+            MIN. ORDER: {formatCurrency(minOrder, currency)}
+          </Text>
         </View>
       </View>
     </View>

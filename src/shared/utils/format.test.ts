@@ -4,6 +4,7 @@ import {
   formatRatingFeedback,
   formatRatingLabel,
   formatPlaceCount,
+  formatCuisineName,
 } from './format';
 
 describe('Format Utilities', () => {
@@ -74,6 +75,12 @@ describe('Format Utilities', () => {
     it('returns plural "places" for count of 0 or multiple', () => {
       expect(formatPlaceCount(0)).toBe('0 places');
       expect(formatPlaceCount(15)).toBe('15 places');
+    });
+  });
+
+  describe('formatCuisineName', () => {
+    it('capitalizes a cuisine name', () => {
+      expect(formatCuisineName('italian')).toBe('Italian');
     });
   });
 });

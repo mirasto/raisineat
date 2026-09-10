@@ -1,5 +1,9 @@
 import type { z } from 'zod';
-import type { loginResponseSchema, loginSchema } from '@/api/schemas';
+import type { loginResponseSchema } from '@/api/schemas';
 
-export type LoginCredentials = z.infer<typeof loginSchema>;
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
 export type LoginResponse = z.infer<typeof loginResponseSchema>;

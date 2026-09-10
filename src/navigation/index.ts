@@ -5,7 +5,6 @@ export type {
   AuthStackParamList,
   RestaurantsStackParamList,
   SplashScreenNavigationProp,
-  LoginScreenNavigationProp,
   CuisineListNavigationProp,
   RestaurantListNavigationProp,
   RestaurantListRouteProp,
