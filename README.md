@@ -1,5 +1,8 @@
 # Intro
 
+[raisineat.webm](https://github.com/user-attachments/assets/fa4d9b09-ac50-47d0-9759-d3722d57b295)
+
+
 Dear Candidate,
 
 First of all, congratulations on making it to this stage! 🥳 The fact that you are reading this means you’ve reached the Tech Challenge Phase—an impressive milestone in our process! 🎉 This puts you halfway through the journey to joining our team. 😎
